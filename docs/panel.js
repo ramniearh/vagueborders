@@ -17,6 +17,7 @@ function isSelected(d) { return !!selected && d.id === selected.id; }
 
 function selectPolity(d) {
   selected = { id: d.id, name: d.name };
+  pulseNext = true;   // a new selection: make the ring catch the eye once
   markSelected();
   updateInfo();
   // On a phone the panel sits below the map: bring it into view.
@@ -30,6 +31,8 @@ function closeInfo() {
   selected = null;
   markSelected();
   info.attr('hidden', true);
+  leaderAt = null;
+  drawLeader();
 }
 
 // Clicking the map outside any polity closes the panel.
@@ -85,7 +88,60 @@ function updateInfo() {
   info.append('a').attr('class', 'issue').attr('target', '_blank').attr('rel', 'noopener')
     .attr('href', issueLink(selected, d, year))
     .text('Wrong? Open an issue');
+
+  leaderAt = d || null;   // nothing to point at if it isn't in this snapshot
+  drawLeader();
 }
+
+// ---- Leader: where on the map is it? ----
+// A ring on the selected polity (on its largest part) and a thin line from
+// there to the panel's heading. Redrawn when the selection, the snapshot or
+// the window size changes. On a phone the panel is below the map: ring only.
+
+const leader = d3.select('#leader');
+let leaderAt = null;     // the selected shape in the snapshot on screen
+let pulseNext = false;   // shrink the ring into place on the next draw
+
+function drawLeader() {
+  leader.selectAll('*').remove();
+  if (!leaderAt) return;
+
+  // The ring: centre of the largest part, map units → pixels in the stage.
+  const k = document.querySelector('.maps').clientWidth / SIZE;
+  const [cx, cy] = d3.greatest(leaderAt.parts, p => p.area).centroid;
+  const x = cx * k, y = cy * k, r = 9;
+
+  const g = leader.append('g');
+  const ring = g.append('g').attr('class', 'ring');
+  ring.append('circle').attr('class', 'halo').attr('cx', x).attr('cy', y).attr('r', r);
+  ring.append('circle').attr('class', 'ink').attr('cx', x).attr('cy', y).attr('r', r);
+  if (pulseNext && !REDUCED) {
+    ring.node().animate([{ transform: 'scale(4)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }],
+      { duration: 600, easing: 'ease-out' });
+  }
+  pulseNext = false;
+  if (matchMedia('(max-width: 700px)').matches) return;
+
+  // Where the line meets the panel: its side, level with the heading;
+  // or its bottom/top edge if the polity is right below/above it.
+  const el = info.node();
+  const L = el.offsetLeft, T = el.offsetTop, R = L + el.offsetWidth, B = T + el.offsetHeight;
+  let ax, ay;
+  if (x < L || x > R) [ax, ay] = [x < L ? L : R, Math.min(T + 18, B)];
+  else if (y > B) [ax, ay] = [x, B];
+  else if (y < T) [ax, ay] = [x, T];
+  else return;   // the polity is under the panel itself
+
+  const len = Math.hypot(ax - x, ay - y);
+  if (len < r + 4) return;
+  const sx = x + (ax - x) / len * r, sy = y + (ay - y) / len * r;   // start at the ring's edge
+  for (const cls of ['halo', 'ink']) {
+    g.insert('line', '.ring').attr('class', cls)
+      .attr('x1', sx).attr('y1', sy).attr('x2', ax).attr('y2', ay);
+  }
+  g.append('circle').attr('class', 'dot').attr('cx', ax).attr('cy', ay).attr('r', 2.2);
+}
+addEventListener('resize', () => drawLeader());
 
 // Kind, and where that comes from. "Not classified" is an answer too.
 function describeKind(dd, d) {

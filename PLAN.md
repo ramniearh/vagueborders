@@ -125,7 +125,7 @@ A small legend shows the three kinds and the two edge types.
 - **Kind** says where it comes from: "from the curated identity table", "from the dataset (type “…”)", or "not classified", with the dataset's own word when it has one that maps to no kind ("civilization").
 - **Wikipedia** uses the REST summary API (`/api/rest_v1/page/summary/{title}`), fetched in the browser and cached per title. The curated title is shown as "curated link"; note it is the *lineage's* article (Byzantium in 1279 shows "Roman Empire", Đại Việt shows "Vietnam"). Otherwise a **machine match** is accepted only if the article (after redirects) is an ordinary article whose title equals the name, ignoring case, accents and punctuation: "Great Khanate" → "Yuan dynasty" and "Touareg" → "Tuareg people" are rejected; "Taino" = "Taíno" passes. It's tagged "machine-matched" with "Same title, but it may be about something else of that name", because exact titles still miss: in 1279, "Granada" matches the modern city and "Cyprus" the modern country. A curated row fixes such cases. The summary is cut to five lines; the link goes to the full article.
 - **Issue link** opens a GitHub issue prefilled with the snapshot, name, id and kind shown, and a note that a border problem may belong upstream.
-- **Layout:** top-right over the map (260px); on screens ≥ 1500px it sits beside the map so it hides nothing; on phones (≤ 700px) it goes below the map with the legend, and scrolls into view when opened.
+- **Layout:** beside the globe (260px) when the window is wide enough, otherwise as far right as fits, overlapping the globe's edge; on phones (≤ 700px) it goes below the map with the legend, and scrolls into view when opened. (Revised after Phase 6, see "Layout fit" below.)
 
 **6 — Honesty panel & ship.** A "How vague is this?" About panel covering:
 - the source (crowd-drawn, GPL, pinned commit);
@@ -147,6 +147,12 @@ Plus search, a random button, an attribution footer, a mobile check and deployme
 - **Mobile (375px):** header, map, legend, controls and footer fit one screen with no sideways scroll; the dialog fills the width and scrolls.
 - **Deploy:** GitHub Pages from `main` `/docs`, with `docs/.nojekyll`. Inline SVG favicon and meta description.
 
+**Layout fit (after Phase 6, Nov 2026).** On a small laptop (~1220×670) the globe, sized by width, didn't fit the screen, and the slider was below the fold. Changes:
+- The globe is sized by the window: `--globe: min(900px, 100vw − 32px, max(300px, 100svh − 116px))`, so header, globe and slider fit one screen. The footer can sit below the fold.
+- The header is one row (wordmark, search, About link), wrapping on a phone.
+- The year readout and the legend sit *inside* the circle, in the empty South Pacific at its upper left (it stays empty in every snapshot: the dataset draws only small islands there). They are placed in `cqw` (container units = % of the globe), and the year scales with the globe. The legend is two short columns (kind | border). A halo in the map colour keeps them readable over the graticule.
+- **Leader:** the selected polity gets an ink ring on its largest part (it shrinks into place once on a new selection, unless reduced motion), and a thin line runs from it to the panel's heading. Search results are easy to spot this way. On a phone it's the ring only, as the panel is below the map. It follows the selection across snapshots and disappears when the polity isn't in the snapshot.
+
 ## Later, maybe
 
 Shareable URLs (`?year=-500&id=achaemenid`), a second projection, a lifespan strip for the selected entity, side-by-side comparison of two years.
@@ -156,7 +162,7 @@ Shareable URLs (`?year=-500&id=achaemenid`), a second projection, a lifespan str
 - **Palette:** paper `#f7f6f1`, map fill `#fffdf8`, ink `#2b2e33`, graticule `#93a6b2` / faint `#c9d3da`, muted text `#6c7480`. Polity colour = `hsl(hash(id), 45%, 50%)`, never a categorical palette.
 - **Type:** Georgia/serif body. Wordmark "**vague**borders" in small caps with wide letter-spacing. Year readout and labels in system monospace; the year is large (≥40px on desktop) with the era name beneath in letterspaced uppercase.
 - **Rendering:** as in Phase 3, including the three kind looks (state: stronger fill + small-caps label; people: lighter fill + ink hatch; not classified: plain fill). The sketch's three-layer heavy blur was approved against hand-drawn ellipses and turns real polygons into fog, so it is **superseded**.
-- **Layout:** map full-width (max ~760–900px), year box top-left over the map, info panel top-right (collapses on mobile). Controls row below: play (solid ink), random (outline), era-banded slider. Italic footer with the tagline.
+- **Layout:** globe as large as fits the window (max 900px), with the year box and legend inside the circle at its upper left, info panel beside the globe (below it on mobile). Controls row below: play (solid ink), random (outline), era-banded slider. Italic footer with the tagline.
 - **Motion:** 400–500ms opacity cross-fades keyed by id; ~1.6s per snapshot when playing; respect reduced motion.
 
 ## Checking the work

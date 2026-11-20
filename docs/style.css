@@ -7,6 +7,10 @@
   --grat-faint: #c9d3da;
   --muted: #6c7480;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* The globe's size: as big as fits. At most 900px, no wider than the window,
+     and short enough that the header, globe and slider fit one screen
+     (116px ≈ header + controls). Never smaller than 300px. */
+  --globe: min(900px, calc(100vw - 32px), max(300px, calc(100svh - 116px)));
 }
 
 body {
@@ -16,16 +20,21 @@ body {
   font: 16px/1.5 Georgia, "Times New Roman", serif;
 }
 
-header { text-align: center; padding: 16px 16px 4px; }
+/* Wordmark, search and About link in one row (they wrap on a phone),
+   so the header takes as little height from the globe as possible. */
+header {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 4px 32px; padding: 10px 16px 4px;
+}
 .wordmark {
   font-weight: normal; font-variant: small-caps; letter-spacing: .18em;
-  font-size: 1.6rem; margin: 0;
+  font-size: 1.6rem; line-height: 1.25; margin: 0;
 }
 
-/* Search box and the About link, under the wordmark. */
+/* Search box and the About link, beside the wordmark. */
 .tools {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-  gap: 6px 16px; margin-top: 6px;
+  gap: 6px 16px;
 }
 #search {
   width: 18em; max-width: 100%; box-sizing: border-box; padding: 4px 8px;
@@ -40,8 +49,14 @@ button.link {
   text-decoration-color: var(--grat); text-underline-offset: 3px;
 }
 
-/* The map is a square; the year box and legend sit in its empty corners. */
-.stage { position: relative; max-width: 900px; margin: 0 auto; padding: 0 16px; }
+/* The stage is exactly the globe's square. The year box and legend sit inside
+   the circle, in the empty South Pacific (upper left); positions are % of the
+   globe in cqw (1% of the stage's width, which is the globe's size; plain %
+   would count the panel below the globe on a phone). */
+.stage {
+  position: relative; width: var(--globe); margin: 0 auto;
+  container-type: inline-size;
+}
 
 /* Two map layers stacked exactly on top of each other (see map.js).
    will-change lets the browser fade a layer on the GPU without redrawing it. */
@@ -52,19 +67,26 @@ button.link {
 #frame { z-index: 2; pointer-events: none; }
 #defs { position: absolute; }
 
-.yearbox { position: absolute; top: 4px; left: 16px; pointer-events: none; }
-.year { font-family: var(--mono); font-size: clamp(26px, 6vw, 44px); line-height: 1; }
+/* A halo in the map's colour keeps text readable over graticule lines. */
+.yearbox, .legend {
+  pointer-events: none;
+  text-shadow: 0 0 2px var(--map), 0 0 4px var(--map), 0 0 6px var(--map);
+}
+.yearbox { position: absolute; top: 15.5cqw; left: 18cqw; }
+.year { font-family: var(--mono); font-size: clamp(22px, 5cqw, 44px); line-height: 1; }
 .era {
   font-family: var(--mono); font-size: 11px; color: var(--muted);
   text-transform: uppercase; letter-spacing: .22em; margin-top: 6px;
 }
 
 .legend {
-  position: absolute; bottom: 4px; left: 16px;
-  font-family: var(--mono); font-size: 11px; color: var(--muted);
-  display: grid; grid-template-columns: auto auto; gap: 2px 8px; align-items: center;
+  position: absolute; top: 26.5cqw; left: 12cqw;
+  font-family: var(--mono); font-size: clamp(9.5px, 1.25cqw, 11px); color: var(--muted);
+  display: flex; gap: 4px 16px; line-height: 1.3;
 }
-.legend .head { grid-column: 1 / -1; text-transform: uppercase; letter-spacing: .12em; font-size: 9.5px; margin-top: 4px; }
+/* Two groups side by side (kind | border), so the legend stays short. */
+.legend .group { display: grid; grid-template-columns: auto auto; gap: 1px 6px; align-items: center; }
+.legend .head { grid-column: 1 / -1; text-transform: uppercase; letter-spacing: .12em; font-size: .86em; }
 .legend svg { display: block; }
 
 /* ---- Controls: play + era-banded slider ---- */
@@ -176,10 +198,14 @@ footer button.link { font-size: 12px; color: var(--muted); }
    filter, so a soft (approximate) edge stays soft when selected. */
 .polity.selected { stroke: var(--ink); stroke-opacity: 1; stroke-width: 2; }
 
-/* ---- Info panel: top-right over the map; below the map on a phone ---- */
+/* ---- Info panel: beside the globe; below it on a phone ---- */
+/* left = beside the globe, or, if the window is too narrow for that, as far
+   right as fits (24px from the window's edge), overlapping the globe a bit.
+   50vw + 50% is the globe's right edge, as the stage is centred. */
 .info {
-  position: absolute; top: 4px; right: 16px; z-index: 4; width: 260px;
-  max-height: calc(100% - 8px); overflow-y: auto; box-sizing: border-box;
+  position: absolute; top: 0; z-index: 4; width: 260px;
+  left: min(calc(100% + 16px), calc(50vw + 50% - 284px));
+  max-height: 100%; overflow-y: auto; box-sizing: border-box;
   background: rgba(255, 253, 248, .95); border: 1px solid var(--grat-faint); border-radius: 4px;
   padding: 10px 14px 12px; font-size: 13.5px; line-height: 1.45;
 }
@@ -219,10 +245,15 @@ footer button.link { font-size: 12px; color: var(--muted); }
 .strip button.kin { background: var(--c); opacity: .35; }
 .strip button.now { outline: 1.5px solid var(--ink); outline-offset: 0; position: relative; }
 
-/* Wide screens: there's room beside the map, so the panel hides nothing. */
-@media (min-width: 1500px) {
-  .info { right: auto; left: calc(100% + 4px); }
+/* ---- Leader: a ring on the selected polity and a line to the panel ---- */
+#leader {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3;
+  overflow: visible; pointer-events: none;
 }
+#leader .halo { fill: none; stroke: var(--map); stroke-width: 4; stroke-opacity: .85; }
+#leader .ink { fill: none; stroke: var(--ink); stroke-width: 1.3; }
+#leader .dot { fill: var(--ink); }
+#leader .ring { transform-box: fill-box; transform-origin: center; }
 /* Phones: the map takes the full width, so the panel and legend go below it. */
 @media (max-width: 700px) {
   .stage { display: flex; flex-direction: column; }

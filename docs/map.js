@@ -213,27 +213,28 @@ function showTooltip(event, d) {
 }
 function hideTooltip() { tooltip.attr('hidden', true); }
 
-// ---- Legend: the three kinds and the two edge types ----
+// ---- Legend: the three kinds and the two edge types, side by side ----
 
 function drawLegend() {
   const legend = d3.select('#legend');
   const grey = '#7d8792';
-  const swatch = (draw) => {
-    const s = legend.append('svg').attr('width', 26).attr('height', 14);
-    draw(s);
+  let group;   // the column being filled
+  const swatch = (draw, label) => {
+    draw(group.append('svg').attr('width', 26).attr('height', 14));
+    group.append('span').text(label);
   };
   const rect = (s) => s.append('rect').attr('x', 4).attr('y', 3).attr('width', 18).attr('height', 8);
 
-  legend.append('div').attr('class', 'head').text('kind');
-  swatch(s => rect(s).attr('fill', grey).attr('fill-opacity', 0.55)); legend.append('span').text('state');
-  swatch(s => { rect(s).attr('fill', grey).attr('fill-opacity', 0.25); rect(s).attr('fill', 'url(#hatch)'); });
-  legend.append('span').text('people');
-  swatch(s => rect(s).attr('fill', grey).attr('fill-opacity', 0.42)); legend.append('span').text('not classified');
+  group = legend.append('div').attr('class', 'group');
+  group.append('div').attr('class', 'head').text('kind');
+  swatch(s => rect(s).attr('fill', grey).attr('fill-opacity', 0.55), 'state');
+  swatch(s => { rect(s).attr('fill', grey).attr('fill-opacity', 0.25); rect(s).attr('fill', 'url(#hatch)'); }, 'people');
+  swatch(s => rect(s).attr('fill', grey).attr('fill-opacity', 0.42), 'not classified');
 
-  legend.append('div').attr('class', 'head').text('border');
-  swatch(s => rect(s).attr('fill', grey).attr('fill-opacity', 0.42).attr('stroke', '#3d434a').attr('stroke-width', 0.8));
-  legend.append('span').text('better documented');
+  group = legend.append('div').attr('class', 'group');
+  group.append('div').attr('class', 'head').text('border');
+  swatch(s => rect(s).attr('fill', grey).attr('fill-opacity', 0.42).attr('stroke', '#3d434a').attr('stroke-width', 0.8),
+    'better documented');
   swatch(s => rect(s).attr('fill', grey).attr('fill-opacity', 0.42).attr('stroke', '#3d434a').attr('stroke-width', 0.8)
-    .attr('filter', softEdge(1, [[0, 0], [20, 20]])));
-  legend.append('span').text('approximate');
+    .attr('filter', softEdge(1, [[0, 0], [20, 20]])), 'approximate');
 }
