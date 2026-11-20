@@ -4,17 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>vagueborders</title>
-<style>
-  body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-       background:#f7f6f1;color:#2b2e33;font:16px/1.5 Georgia,'Times New Roman',serif;text-align:center;padding:24px}
-  h1{font-weight:normal;font-variant:small-caps;letter-spacing:.18em;font-size:2.2rem;margin:0 0 .4em}
-  h1 b{font-weight:bold}
-  p{color:#6c7480;font-style:italic;margin:.2em 0}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1><b>vague</b>borders</h1>
-  <p>all borders approximate. some borders imaginary.</p>
-  <p>(the map is still being drawn — vaguely.)</p>
+  <header>
+    <h1 class="wordmark"><b>vague</b>borders</h1>
+  </header>
+
+  <main class="stage">
+    <div class="yearbox"><div class="year" id="year"></div></div>
+    <svg id="map" role="img" aria-label="Map of human polities"></svg>
+    <div class="legend" id="legend"></div>
+    <div class="tooltip" id="tooltip" hidden></div>
+  </main>
+
+  <!-- Temporary: a plain year picker until the Phase 4 slider replaces it. -->
+  <div class="controls">
+    <label>snapshot <select id="year-select"></select></label>
+  </div>
+
+  <footer>all borders approximate. some borders imaginary.</footer>
+
+  <script src="vendor/d3.v7.min.js"></script>
+  <script src="vendor/topojson-client.v3.min.js"></script>
+  <script src="map.js"></script>
 </body>
 </html>

@@ -1,0 +1,71 @@
+/* Palette and type from PLAN.md ("Design spec"). */
+:root {
+  --paper: #f7f6f1;
+  --map: #fffdf8;
+  --ink: #2b2e33;
+  --grat: #93a6b2;
+  --grat-faint: #c9d3da;
+  --muted: #6c7480;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 Georgia, "Times New Roman", serif;
+}
+
+header { text-align: center; padding: 16px 16px 0; }
+.wordmark {
+  font-weight: normal; font-variant: small-caps; letter-spacing: .18em;
+  font-size: 1.6rem; margin: 0;
+}
+
+/* The map is a square; the year box and legend sit in its empty corners. */
+.stage { position: relative; max-width: 900px; margin: 0 auto; padding: 0 16px; }
+#map { display: block; width: 100%; height: auto; }
+
+.yearbox { position: absolute; top: 4px; left: 16px; pointer-events: none; }
+.year { font-family: var(--mono); font-size: clamp(26px, 6vw, 44px); line-height: 1; }
+
+.legend {
+  position: absolute; bottom: 4px; left: 16px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  display: grid; grid-template-columns: auto auto; gap: 2px 8px; align-items: center;
+}
+.legend .head { grid-column: 1 / -1; text-transform: uppercase; letter-spacing: .12em; font-size: 9.5px; margin-top: 4px; }
+.legend svg { display: block; }
+
+.controls { text-align: center; padding: 8px 16px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.controls select { font: inherit; }
+
+footer { text-align: center; font-style: italic; color: var(--muted); padding: 8px 16px 24px; }
+
+.tooltip {
+  position: absolute; pointer-events: none;
+  background: var(--map); border: 1px solid var(--grat-faint); border-radius: 3px;
+  padding: 3px 7px; font-family: var(--mono); font-size: 12px; white-space: nowrap;
+}
+.tooltip .under { color: var(--muted); }
+
+/* ---- Map layers ---- */
+.sphere { fill: var(--map); }
+.outline { fill: none; stroke: var(--grat); stroke-width: 1; }
+.graticule { fill: none; stroke: var(--grat-faint); stroke-width: .5; }
+
+/* Each polity group sets its own fill/stroke colour (identity).
+   Kind only changes fill strength (and the hatch, drawn as a separate layer). */
+.polity { stroke-width: .6; stroke-opacity: .7; }
+.polity.kind-state  { fill-opacity: .55; }
+.polity.kind-people { fill-opacity: .25; }
+.polity.kind-none   { fill-opacity: .42; }
+.polity.kind-unnamed { fill: #8d949b; fill-opacity: .12; stroke: none; pointer-events: none; }
+.polity:not(.kind-unnamed):hover { stroke-opacity: 1; stroke-width: 1.4; }
+
+.labels text {
+  font-family: var(--mono); font-size: 10px; fill: var(--ink);
+  text-anchor: middle; dominant-baseline: central; pointer-events: none;
+  paint-order: stroke; stroke: var(--map); stroke-width: 2.5px; stroke-opacity: .8;
+}
+.labels text.kind-state { font-variant: small-caps; letter-spacing: .04em; font-size: 11px; }
