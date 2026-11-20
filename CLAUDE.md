@@ -11,10 +11,10 @@ It's an informal hobby project, and the owner is using it to **learn to code wit
 - **Phase 1 done:** dataset cloned to `data/raw/` @ `4b5039e`; `pipeline/years.js` writes `docs/data/years.json` (54 years, −123000…2010; `world_bc1` → −1, i.e. 1 BCE, no year 0); LICENSE (GPL-3.0); d3 v7.9.0 + topojson-client v3.1.0 in `docs/vendor/`.
 - **Phase 2 done:** `npm install` then `npm run build` (`pipeline/build.js`, mapshaper as a dev dependency) writes `docs/data/world_{year}.topo.json` (year as in years.json, e.g. `world_-2000`) + `polities.json`. Each TopoJSON has one object, `polities`, with properties `{name, precision (1|3), subject_to, type_raw}`. 4.90 MB / 1.19 MB gzipped; flood check passes for all 54. No `-filter-slivers` (it deleted Venice etc.); see PLAN.md.
 - **Phase 2b done:** `data/identities.csv` (284 rows; `Name@from..to` year ranges allowed in dataset_names) is read by `pipeline/identities.js`. Features now also carry `id`, `kind` (state/people), `kind_source` (curated/dataset); null properties are omitted (missing = null). `docs/data/identities.json` maps id → `{name, wiki}`. Wiki titles verified against the Wikipedia API. Rows are Claude's draft: the owner is reviewing them.
-- `docs/index.html` is still a placeholder so the GitHub Pages URL works straight away.
+- **Phase 3 done:** `docs/index.html` + `style.css` + `map.js` draw one snapshot (pick it with the temporary `<select>` or `?year=1279`). Real polygons; precision 1 → per-part Gaussian blur (σ = 9% of the smaller dimension, floor 0.8, cap 2.5), precision 3 → crisp. Kind looks, labels, tooltip and legend are in. See PLAN.md's Phase 3 result.
 - `sketch/vagueborders-sketch.html` (if the owner has added it) is the reference for layout, palette and type only. Its blur effect is superseded; see PLAN.md.
-- `.claude/launch.json` has a `docs` preview server (port 8000) for the desktop app.
-- **Next: Phase 3 (the map).** Update this section whenever a phase is finished.
+- `.claude/launch.json` has a `docs` preview server (port 8000) and `docs-alt` (port 8010) for when 8000 is taken.
+- **Next: Phase 4 (time).** Update this section whenever a phase is finished.
 
 ## Layout
 

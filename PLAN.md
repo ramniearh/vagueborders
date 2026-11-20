@@ -87,6 +87,14 @@ Kind changes the fill strength and texture only, never the hue (identity) or the
 A small legend shows the three kinds and the two edge types.
 *Done when:* the test years bc2000 / 1279 / 1500 / 1920 are legible, you can tell approximate borders from better-documented ones at a glance, and you can tell states, peoples and not-classified areas apart without the legend getting in the way.
 
+*Result (Nov 2026):* `docs/index.html` + `style.css` + `map.js`, SVG in a fixed 900×900 coordinate space. Details settled while building:
+- The soft edge is a Gaussian blur (σ = 9% of the smaller dimension) on the whole shape, fill and stroke together, so neighbouring approximate areas blend at their shared border. σ is **capped at 2.5** (at 6 the big shapes turned to fog) and has a **floor of 0.8**, so small approximate shapes never look crisp. σ is rounded to 0.5, which means only a handful of shared filters.
+- The blur is sized **per polygon part**, not per feature: otherwise an empire's small islands get the empire-sized blur and vanish.
+- The people hatch is one masked layer. The mask holds white copies of the people shapes, blurred the same way, so the hatch fades at soft edges exactly as the fill does (kind never changes the edge).
+- Precision is close to uniform per snapshot: everything before 1920 is precision 1, and 1920 onwards is precision 3. So the soft/crisp contrast mostly shows between years.
+- Speed: 1492 (1,943 parts) paints in ~35 ms, but the JS takes ~230 ms, mostly projecting. Phase 4 should project each snapshot once at preload and cache it.
+- A temporary `<select>` and `?year=` pick the snapshot until the Phase 4 slider.
+
 **4 — Time.** Preload all snapshots, since the whole set is small. Then:
 - a slider over the snapshots with a big year label (BCE/CE);
 - era bands, with a "Prehistory" band for the sparse early snapshots;
