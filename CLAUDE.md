@@ -9,9 +9,11 @@ It's an informal hobby project, and the owner is using it to **learn to code wit
 
 - Planning and a data audit are done.
 - **Phase 1 done:** dataset cloned to `data/raw/` @ `4b5039e`; `pipeline/years.js` writes `docs/data/years.json` (54 years, −123000…2010; `world_bc1` → −1, i.e. 1 BCE, no year 0); LICENSE (GPL-3.0); d3 v7.9.0 + topojson-client v3.1.0 in `docs/vendor/`.
+- **Phase 2 done:** `npm install` then `npm run build` (`pipeline/build.js`, mapshaper as a dev dependency) writes `docs/data/world_{year}.topo.json` (year as in years.json, e.g. `world_-2000`) + `polities.json`. Each TopoJSON has one object, `polities`, with properties `{name, precision (1|3), subject_to, type_raw}`. 4.90 MB / 1.19 MB gzipped; flood check passes for all 54. No `-filter-slivers` (it deleted Venice etc.); see PLAN.md.
 - `docs/index.html` is still a placeholder so the GitHub Pages URL works straight away.
 - `sketch/vagueborders-sketch.html` (if the owner has added it) is the reference for layout, palette and type only. Its blur effect is superseded; see PLAN.md.
-- **Next: Phase 2.** Update this section whenever a phase is finished.
+- `.claude/launch.json` has a `docs` preview server (port 8000) for the desktop app.
+- **Next: Phase 2b (identities).** Update this section whenever a phase is finished.
 
 ## Layout
 

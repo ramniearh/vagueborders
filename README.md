@@ -23,8 +23,12 @@ The dataset is cloned (git-ignored) into `data/raw/` at the pinned commit:
 ```
 git clone --filter=blob:none --no-checkout https://github.com/aourednik/historical-basemaps.git data/raw
 git -C data/raw checkout 4b5039e
-node pipeline/years.js
+npm install
+npm run years
+npm run build
 ```
+
+`npm run build` simplifies every snapshot with [mapshaper](https://github.com/mbloch/mapshaper) and writes `docs/data/world_{year}.topo.json` plus `docs/data/polities.json`. It fails loudly if any polygon would flood the globe.
 
 ## Credits & licence
 

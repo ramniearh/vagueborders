@@ -25,7 +25,8 @@ Here "precise" means being precise about how uncertain things are.
 - 42 of 54 files have reversed outer rings, mixed within files.
 - Licence: **GPL-3.0**.
 - **It's mostly an atlas of peoples, not empires.** The most persistent entities are hunter-gatherer and subsistence categories. The map shows "who was where, roughly", states included. Don't pitch it as "watch empires rise and fall", and label what kind of entity something is wherever that's known.
-- **The dataset rarely says what kind of entity a feature is.** About 1,600 of 17,783 features (~9%) have a `TYPE` or `type` field, mostly in the earliest snapshots (e.g. "hunter-gatherers", "pastoral nomads", "kingdom", "state society"). Nothing distinguishes an empire from any other state, so the category is "state", not "empire".
+- `SUBJECTO` usually repeats the feature's own name or abbreviation. The pipeline keeps it as `subject_to` only when it names someone else (481 raw features differ from NAME; self-repeats like "Southern Xiongnu → S. Xiongnu" are dropped).
+- **The dataset rarely says what kind of entity a feature is.** About 1,600 of 17,783 features (~9%) have a `TYPE` or `type` field, but only ~140 have a non-empty value, mostly in the earliest snapshots (e.g. "hunter-gatherers", "pastoral nomads", "kingdom", "state society"). Nothing distinguishes an empire from any other state, so the category is "state", not "empire".
 
 ## Decisions
 
@@ -50,12 +51,14 @@ One phase per Claude Code session. Stop at the end of each one and check the res
 
 **2 — Pipeline.** For each year:
 - normalise each feature to `{name | null, precision (1|3), subject_to, type_raw | null}`, where `type_raw` is the dataset's `TYPE` or `type` value, kept as-is;
-- simplify with `mapshaper -simplify 4% keep-shapes -filter-slivers`, then output TopoJSON with `precision=0.01`;
-- **after** simplifying, fix winding polygon by polygon: if `d3.geoArea(outer ring) > 2π`, reverse it (rewinding the whole file blindly doesn't work);
-- write `docs/data/world_{year}.topo.json`.
+- simplify with `mapshaper -simplify 4% keep-shapes`, then output TopoJSON with `precision=0.01`. **Not** `-filter-slivers`: it deletes whole small features (Venice in 1279, the Minoans in 2000 BCE, 135 named peoples in 1492);
+- **after** simplifying, fix winding polygon by polygon: if `d3.geoArea(outer ring) > 2π`, reverse it; likewise reverse any hole whose own area is < 2π (rewinding the whole file blindly doesn't work);
+- write `docs/data/world_{year}.topo.json`, with `{year}` exactly as in years.json (`world_-2000.topo.json`, `world_1279.topo.json`).
 
 Also write `polities.json` (each name → the snapshots it appears in).
 *Done when:* output is about 5 MB in total (about 1.1 MB gzipped), and **no file out of the 54** has a polygon that floods the whole globe. Check all of them, not just the test years.
+
+*Result (Nov 2026):* `npm run build` (`pipeline/build.js`) → 4.90 MB, 1.19 MB gzipped; largest file 1492 at 604 KB. Mapshaper already fixes most winding on import, but 89 rings still needed the per-polygon fix. No feature in any file covers more than 15% of the globe. 325 features come out of simplification with no geometry and are dropped; all are digitising leftovers of ≤ 0.2 km², but two names disappear entirely because of it (a Seminole reservation in 1492, a zero-area "West African cereal farmers" in 900). polities.json has 3,000 names.
 
 **2b — Identities.** Create `data/identities.csv` with the columns `id, display_name, dataset_names (|-separated), kind (state / people / other / unknown), wiki_title`. Fill in about 200 rows covering the most persistent or prominent entities; Claude drafts them and I review. The pipeline attaches the identity id, and unmatched names keep their slug.
 
