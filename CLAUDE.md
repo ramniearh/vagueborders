@@ -36,6 +36,7 @@ sketch/          design mockup (reference only)
 - Colour = `hsl(hash(identity id), 45%, 50%)`. Labels always show the dataset's own name for that snapshot.
 - Wikipedia: use the curated title from the identity table if there is one; otherwise use a near-exact match labelled "machine-matched"; otherwise show nothing. Never guess.
 - Unnamed features stay unnamed: faint grey, no label.
+- Kind has three looks: state / people / not classified. Use the curated `kind`, else the mapped dataset `TYPE`, else "not classified". Never guess a kind, and never use an "empire" category. Kind changes only fill strength and texture, never hue or edge.
 - Use the palette, type and layout from PLAN.md. Don't invent new styles.
 
 ## How to work with the owner
