@@ -1,4 +1,4 @@
-// vagueborders, Phase 3: draw one snapshot of the map.
+// vagueborders: drawing the map. (time.js handles years, the slider and play.)
 // The rules come from PLAN.md. In short, each visual channel means one thing:
 //   hue            = identity   (hash of the identity id)
 //   edge           = precision  (1 → soft, 3 → crisp)
@@ -10,7 +10,6 @@ const BLUR_CAP = 2.5;        // ...but never more than this (map units), or big 
 const BLUR_MIN = 0.8;        // ...and never less, so even small approximate shapes look soft
 const CHAR_W = 6.1;          // rough width of one 10px monospace character, for label fitting
 
-const svg = d3.select('#map').attr('viewBox', `0 0 ${SIZE} ${SIZE}`);
 const tooltip = d3.select('#tooltip');
 
 // North Pole in the middle, out to 60°S (the UN-emblem look).
@@ -18,10 +17,13 @@ const projection = d3.geoAzimuthalEquidistant()
   .rotate([0, -90])
   .clipAngle(150)
   .fitExtent([[6, 6], [SIZE - 6, SIZE - 6]], { type: 'Sphere' });
-const path = d3.geoPath(projection);
+// One decimal is plenty in a 900-unit space, and keeps the cached path strings small.
+const path = d3.geoPath(projection).digits(1);
+const SPHERE_D = path({ type: 'Sphere' });
+const GRATICULE_D = path(d3.geoGraticule10());
 
-// ---- Static layers, drawn once ----
-const defs = svg.append('defs');
+// ---- Shared definitions (hatch, blur filters), in their own invisible <svg> ----
+const defs = d3.select('#defs').append('defs');
 
 // One shared diagonal hatch, in ink, for "people".
 defs.append('pattern')
@@ -30,20 +32,37 @@ defs.append('pattern')
   .append('line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 5)
   .attr('stroke', '#2b2e33').attr('stroke-width', 0.8).attr('stroke-opacity', 0.35);
 
-// The hatch is drawn as one big rectangle, shown only through this mask.
-// The mask holds a white copy of every "people" shape, blurred exactly like
-// the shape itself, so the hatch fades out at a soft edge just as the fill does.
-const peopleMask = defs.append('mask').attr('id', 'people-mask')
-  .attr('maskUnits', 'userSpaceOnUse')
-  .attr('x', 0).attr('y', 0).attr('width', SIZE).attr('height', SIZE);
+// The sphere's outline sits on top of everything, outside the fading layers.
+d3.select('#frame').attr('viewBox', `0 0 ${SIZE} ${SIZE}`)
+  .append('path').attr('class', 'outline').attr('d', SPHERE_D);
 
-svg.append('path').attr('class', 'sphere').attr('d', path({ type: 'Sphere' }));
-svg.append('path').attr('class', 'graticule').attr('d', path(d3.geoGraticule10()));
-const polityLayer = svg.append('g').attr('class', 'polities');
-svg.append('rect').attr('width', SIZE).attr('height', SIZE)
-  .attr('fill', 'url(#hatch)').attr('mask', 'url(#people-mask)').attr('pointer-events', 'none');
-svg.append('path').attr('class', 'outline').attr('d', path({ type: 'Sphere' }));
-const labelLayer = svg.append('g').attr('class', 'labels');
+// ---- Map layers ----
+// There are two identical layers, stacked. A new snapshot is painted into the
+// one at the back, which is then brought to the front and faded in (time.js).
+// Each layer has an opaque sphere, so the fade blends old and new pixel by
+// pixel: whatever is the same in both snapshots (same id → same hue, same
+// shape) doesn't flicker; only what changed fades. Fill, hatch mask and
+// labels all live inside the layer, so they all fade together.
+function makeLayer(selector, name) {
+  const svg = d3.select(selector).attr('viewBox', `0 0 ${SIZE} ${SIZE}`);
+
+  // The hatch is one big rectangle, shown only through this mask. The mask
+  // holds a white copy of every "people" shape, blurred exactly like the
+  // shape itself, so the hatch fades out at a soft edge just as the fill does.
+  const mask = svg.append('defs').append('mask').attr('id', `people-mask-${name}`)
+    .attr('maskUnits', 'userSpaceOnUse')
+    .attr('x', 0).attr('y', 0).attr('width', SIZE).attr('height', SIZE);
+
+  svg.append('path').attr('class', 'sphere').attr('d', SPHERE_D);
+  svg.append('path').attr('class', 'graticule').attr('d', GRATICULE_D);
+  const polities = svg.append('g').attr('class', 'polities');
+  svg.append('rect').attr('width', SIZE).attr('height', SIZE)
+    .attr('fill', 'url(#hatch)').attr('mask', `url(#people-mask-${name})`)
+    .attr('pointer-events', 'none');
+  const labels = svg.append('g').attr('class', 'labels');
+
+  return { el: svg.node(), mask, polities, labels, snap: null };
+}
 
 // ---- Helpers ----
 
@@ -96,9 +115,11 @@ function formatYear(y) {
   return y < 0 ? `${(-y).toLocaleString('en')} BCE` : `${y} CE`;
 }
 
-// ---- Drawing one snapshot ----
+// ---- Projecting a snapshot ----
+// This is the slow part (≈ a quarter second for 1492), so time.js does it
+// once per snapshot and keeps the result: plain shapes and label positions.
 
-function draw(topo) {
+function project(topo) {
   const shapes = topojson.feature(topo, topo.objects.polities).features.map(f => {
     const p = f.properties;  // {name, precision, subject_to, id, kind, ...}; missing key = null
     return {
@@ -110,36 +131,12 @@ function draw(topo) {
       parts: partsOf(f.geometry, p.precision),
     };
   }).filter(s => s.parts.length);
-
-  // Polities: one group per feature (colour set here), one path per part (edge set here).
-  polityLayer.selectAll('g.polity')
-    .data(shapes)
-    .join('g')
-      .attr('class', d => `polity kind-${d.kind}`)
-      .attr('fill', d => d.id ? `hsl(${hue(d.id)}, 45%, 50%)` : null)
-      .attr('stroke', d => d.id ? `hsl(${hue(d.id)}, 45%, 32%)` : null)
-      .on('pointermove', showTooltip)
-      .on('pointerleave', () => tooltip.attr('hidden', true))
-    .selectAll('path')
-    .data(d => d.parts)
-    .join('path')
-      .attr('d', p => p.d)
-      .attr('filter', p => p.filter);
-
-  // White, equally blurred copies of the "people" shapes, for the hatch mask.
-  peopleMask.selectAll('path')
-    .data(shapes.filter(s => s.kind === 'people').flatMap(s => s.parts))
-    .join('path')
-      .attr('fill', 'white')
-      .attr('d', p => p.d)
-      .attr('filter', p => p.filter);
-
-  drawLabels(shapes);
+  return { shapes, labels: placeLabels(shapes) };
 }
 
 // Labels: the dataset's own name, placed on the feature's largest part.
 // Biggest first; a label is skipped if it doesn't fit or would overlap another.
-function drawLabels(shapes) {
+function placeLabels(shapes) {
   const candidates = shapes
     .filter(s => s.name)
     .map(s => {
@@ -156,15 +153,47 @@ function drawLabels(shapes) {
     const [x, y] = c.part.centroid;
     const box = { x0: x - w / 2, x1: x + w / 2, y0: y - h / 2, y1: y + h / 2 };
     if (placed.some(b => b.x0 < box.x1 && box.x0 < b.x1 && b.y0 < box.y1 && box.y0 < b.y1)) continue;
-    placed.push(Object.assign(box, c, { x, y }));
+    placed.push(Object.assign(box, { text: c.text, kind: c.kind, x, y }));
   }
+  return placed;
+}
 
-  labelLayer.selectAll('text')
-    .data(placed)
+// ---- Painting a projected snapshot into a layer ----
+
+function paint(layer, snap) {
+  const { shapes, labels } = snap;
+
+  // Polities: one group per feature (colour set here), one path per part (edge set here).
+  layer.polities.selectAll('g.polity')
+    .data(shapes)
+    .join('g')
+      .attr('class', d => `polity kind-${d.kind}`)
+      .attr('fill', d => d.id ? `hsl(${hue(d.id)}, 45%, 50%)` : null)
+      .attr('stroke', d => d.id ? `hsl(${hue(d.id)}, 45%, 32%)` : null)
+      .on('pointermove', showTooltip)
+      .on('pointerleave', hideTooltip)
+    .selectAll('path')
+    .data(d => d.parts)
+    .join('path')
+      .attr('d', p => p.d)
+      .attr('filter', p => p.filter);
+
+  // White, equally blurred copies of the "people" shapes, for the hatch mask.
+  layer.mask.selectAll('path')
+    .data(shapes.filter(s => s.kind === 'people').flatMap(s => s.parts))
+    .join('path')
+      .attr('fill', 'white')
+      .attr('d', p => p.d)
+      .attr('filter', p => p.filter);
+
+  layer.labels.selectAll('text')
+    .data(labels)
     .join('text')
       .attr('class', d => `kind-${d.kind}`)
       .attr('x', d => d.x).attr('y', d => d.y)
       .text(d => d.text);
+
+  layer.snap = snap;   // remember what this layer shows
 }
 
 function showTooltip(event, d) {
@@ -175,6 +204,7 @@ function showTooltip(event, d) {
   tooltip.append('span').text(d.name);
   if (d.subjectTo) tooltip.append('span').attr('class', 'under').text(` · under ${d.subjectTo}`);
 }
+function hideTooltip() { tooltip.attr('hidden', true); }
 
 // ---- Legend: the three kinds and the two edge types ----
 
@@ -200,28 +230,3 @@ function drawLegend() {
     .attr('filter', softEdge(1, [[0, 0], [20, 20]])));
   legend.append('span').text('approximate');
 }
-
-// ---- Year picker (temporary, until the Phase 4 slider) ----
-
-let loading = 0;
-async function showYear(year) {
-  const ticket = ++loading;
-  const topo = await d3.json(`data/world_${year}.topo.json`);
-  if (ticket !== loading) return;          // a newer year was picked meanwhile
-  draw(topo);
-  d3.select('#year').text(formatYear(year));
-  d3.select('#year-select').property('value', year);
-  history.replaceState(null, '', `?year=${year}`);
-}
-
-(async function start() {
-  const years = await d3.json('data/years.json');
-  drawLegend();
-  d3.select('#year-select')
-    .on('change', e => showYear(+e.target.value))
-    .selectAll('option').data(years).join('option')
-      .attr('value', y => y).text(formatYear);
-
-  const asked = +new URLSearchParams(location.search).get('year');
-  showYear(years.includes(asked) ? asked : 1279);
-})();

@@ -24,10 +24,22 @@ header { text-align: center; padding: 16px 16px 0; }
 
 /* The map is a square; the year box and legend sit in its empty corners. */
 .stage { position: relative; max-width: 900px; margin: 0 auto; padding: 0 16px; }
-#map { display: block; width: 100%; height: auto; }
+
+/* Two map layers stacked exactly on top of each other (see map.js).
+   will-change lets the browser fade a layer on the GPU without redrawing it. */
+.maps { position: relative; aspect-ratio: 1 / 1; isolation: isolate; }
+.maps svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.layer { will-change: opacity; visibility: hidden; pointer-events: none; }
+.layer.front { z-index: 1; pointer-events: auto; }
+#frame { z-index: 2; pointer-events: none; }
+#defs { position: absolute; }
 
 .yearbox { position: absolute; top: 4px; left: 16px; pointer-events: none; }
 .year { font-family: var(--mono); font-size: clamp(26px, 6vw, 44px); line-height: 1; }
+.era {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .22em; margin-top: 6px;
+}
 
 .legend {
   position: absolute; bottom: 4px; left: 16px;
@@ -37,11 +49,48 @@ header { text-align: center; padding: 16px 16px 0; }
 .legend .head { grid-column: 1 / -1; text-transform: uppercase; letter-spacing: .12em; font-size: 9.5px; margin-top: 4px; }
 .legend svg { display: block; }
 
-.controls { text-align: center; padding: 8px 16px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
-.controls select { font: inherit; }
+/* ---- Controls: play + era-banded slider ---- */
+.controls {
+  max-width: 900px; margin: 0 auto; padding: 8px 16px; box-sizing: border-box;
+  display: flex; align-items: center; gap: 14px;
+}
+.play {
+  flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%;
+  background: var(--ink); color: var(--map); font-size: 14px; cursor: pointer;
+}
+.play:focus-visible { outline: 2px solid var(--grat); outline-offset: 2px; }
+
+/* The bands and ticks are inset by half the thumb's width, so snapshot i
+   sits right under the thumb when the slider is at i. */
+.timeline { position: relative; flex: 1; min-width: 0; height: 34px; }
+.bands, .ticks { position: absolute; left: 3px; right: 3px; }
+.bands { top: 2px; height: 22px; }
+.band {
+  position: absolute; top: 0; bottom: 0; box-sizing: border-box; padding-left: 5px;
+  overflow: hidden; white-space: nowrap; border-left: 1px solid var(--grat-faint);
+  font: 9px/22px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+.band:nth-child(odd) { background: rgba(147, 166, 178, .13); }
+.band.tight { color: transparent; }
+.ticks { top: 26px; height: 5px; }
+.ticks i { position: absolute; top: 0; width: 1px; height: 100%; background: var(--grat); }
+
+/* The range input itself is invisible except for its thumb: a thin ink bar. */
+#slider {
+  position: absolute; top: 0; left: 0; width: 100%; height: 34px; margin: 0;
+  background: none; -webkit-appearance: none; appearance: none; cursor: pointer;
+}
+#slider::-webkit-slider-runnable-track { height: 34px; background: none; }
+#slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 6px; height: 34px; border-radius: 2px; background: var(--ink);
+}
+#slider::-moz-range-track { background: none; }
+#slider::-moz-range-thumb { width: 6px; height: 34px; border: 0; border-radius: 2px; background: var(--ink); }
+#slider:focus-visible { outline: 2px solid var(--grat); outline-offset: 2px; }
 
 footer { text-align: center; font-style: italic; color: var(--muted); padding: 8px 16px 24px; }
 
+.yearbox, .legend, .tooltip { z-index: 3; }
 .tooltip {
   position: absolute; pointer-events: none;
   background: var(--map); border: 1px solid var(--grat-faint); border-radius: 3px;

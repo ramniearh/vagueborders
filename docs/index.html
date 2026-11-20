@@ -12,21 +12,37 @@
   </header>
 
   <main class="stage">
-    <div class="yearbox"><div class="year" id="year"></div></div>
-    <svg id="map" role="img" aria-label="Map of human polities"></svg>
+    <!-- Two stacked map layers for cross-fading, plus the sphere's outline on top. -->
+    <div class="maps" role="img" aria-label="Map of human polities">
+      <svg class="layer" id="layer-a"></svg>
+      <svg class="layer" id="layer-b"></svg>
+      <svg id="frame"></svg>
+    </div>
+    <div class="yearbox">
+      <div class="year" id="year"></div>
+      <div class="era" id="era"></div>
+    </div>
     <div class="legend" id="legend"></div>
     <div class="tooltip" id="tooltip" hidden></div>
   </main>
 
-  <!-- Temporary: a plain year picker until the Phase 4 slider replaces it. -->
   <div class="controls">
-    <label>snapshot <select id="year-select"></select></label>
+    <button class="play" id="play" aria-label="Play">&#x25B6;&#xFE0E;</button>
+    <div class="timeline">
+      <div class="bands" id="bands"></div>
+      <div class="ticks" id="ticks"></div>
+      <input type="range" id="slider" min="0" max="53" step="1" value="0" aria-label="Snapshot">
+    </div>
   </div>
 
   <footer>all borders approximate. some borders imaginary.</footer>
 
+  <!-- Shared hatch pattern and blur filters, used by both map layers. -->
+  <svg id="defs" width="0" height="0" aria-hidden="true"></svg>
+
   <script src="vendor/d3.v7.min.js"></script>
   <script src="vendor/topojson-client.v3.min.js"></script>
   <script src="map.js"></script>
+  <script src="time.js"></script>
 </body>
 </html>
