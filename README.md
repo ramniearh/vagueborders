@@ -4,9 +4,9 @@
 
 An animated atlas of human polities and peoples from the earliest snapshots to 2010. It aims to be as vague as the underlying data and no more: borders the data marks as approximate look approximate, and nothing is interpolated between snapshots. It's a tool for building intuition, not a reference work.
 
-**Live:** https://YOUR-USERNAME.github.io/vagueborders/ *(update once Pages is on)*
+**Live:** https://ramniearh.github.io/vagueborders/
 
-Work in progress. See `PLAN.md`.
+Click a shape for what the data says about it; "how vague is this?" explains what the map can and can't tell you. Plans and decisions are in `PLAN.md`.
 
 ## Run locally
 
@@ -15,6 +15,10 @@ python3 -m http.server -d docs 8000
 ```
 
 Then open http://localhost:8000.
+
+## Deploy
+
+GitHub Pages serves the `docs/` folder of `main` (Settings → Pages → Deploy from a branch → `main` / `/docs`). There's no build step: push, and the site updates a minute later. `docs/.nojekyll` tells Pages to serve the files as they are.
 
 ## Rebuild the data
 

@@ -91,7 +91,7 @@ A small legend shows the three kinds and the two edge types.
 - The soft edge is a Gaussian blur (σ = 9% of the smaller dimension) on the whole shape, fill and stroke together, so neighbouring approximate areas blend at their shared border. σ is **capped at 2.5** (at 6 the big shapes turned to fog) and has a **floor of 0.8**, so small approximate shapes never look crisp. σ is rounded to 0.5, which means only a handful of shared filters.
 - The blur is sized **per polygon part**, not per feature: otherwise an empire's small islands get the empire-sized blur and vanish.
 - The people hatch is one masked layer. The mask holds white copies of the people shapes, blurred the same way, so the hatch fades at soft edges exactly as the fill does (kind never changes the edge).
-- Precision is close to uniform per snapshot: everything before 1920 is precision 1, and 1920 onwards is precision 3. So the soft/crisp contrast mostly shows between years.
+- Precision is close to uniform per snapshot: up to 1600 everything is precision 1 (bar 3 shapes), and from 1650 on nearly everything is precision 3. (This note first said 1920; corrected in Phase 6 after counting.) So the soft/crisp contrast mostly shows between years.
 - Speed: 1492 (1,943 parts) paints in ~35 ms, but the JS takes ~230 ms, mostly projecting. Phase 4 should project each snapshot once at preload and cache it.
 - A temporary `<select>` and `?year=` pick the snapshot until the Phase 4 slider.
 
@@ -136,6 +136,16 @@ A small legend shows the three kinds and the two edge types.
 - what is *not* shown.
 
 Plus search, a random button, an attribution footer, a mobile check and deployment.
+
+*Result (Nov 2026):* `docs/about.js` + `docs/find.js`. Details settled while building:
+- **About** is a native `<dialog>` ("how vague is this?" under the wordmark and in the footer). Its text is static in `index.html`; a "This snapshot" line is counted live from the snapshot on screen (shapes, % named, % approximate, % per kind). Besides the list above it covers colour (lineage vs one-colour-per-name), the curated table being AI-drafted and under review, the Wikipedia link labels, and that opening a panel fetches from en.wikipedia.org.
+- **Precision tracks the date, not the border.** Counting all 54 files: up to 1600 every shape is precision 1 except 3; from 1650 nearly all are 3. The switch sits right after the 1648 Peace of Westphalia, which the dataset's README names as when national borders become meaningful in Europe, applied worldwide. The dataset defines 3 as "determined by international law". The About panel says this plainly: a crisp edge in 1700 means "treated as a legal border", not "well known on the ground".
+- **Search** is an `<input type=search>` with a `<datalist>` of every dataset name (2,999) plus curated lineage names that aren't dataset names (63, tagged "lineage"); 3,053 options. Matching ignores case and accents. It jumps to the snapshot *nearest the current one* where the name appears and opens its panel. No match → the browser's own validation message.
+- **Random** picks a dataset name uniformly (not weighted by size or lifespan), then one of its snapshots. That mostly surfaces small one-snapshot peoples, which is an honest picture of the dataset.
+- Arrow keys and space are ignored while typing in search or reading the dialog.
+- **Footer:** tagline, then credits (historical-basemaps by André Ourednik and contributors, GPL-3.0, pinned link; Wikipedia CC BY-SA; this repo GPL-3.0).
+- **Mobile (375px):** header, map, legend, controls and footer fit one screen with no sideways scroll; the dialog fills the width and scrolls.
+- **Deploy:** GitHub Pages from `main` `/docs`, with `docs/.nojekyll`. Inline SVG favicon and meta description.
 
 ## Later, maybe
 

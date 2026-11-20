@@ -4,21 +4,52 @@
     {
       "name": "docs",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "-d", "docs", "8000"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "-d",
+        "docs",
+        "8000"
+      ],
       "port": 8000
     },
     {
       "name": "docs-alt",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "-d", "docs", "8010"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "-d",
+        "docs",
+        "8010"
+      ],
       "port": 8010,
       "autoPort": false
     },
     {
       "name": "docs-3",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "-d", "docs", "8020"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "-d",
+        "docs",
+        "8020"
+      ],
       "port": 8020,
+      "autoPort": false
+    },
+    {
+      "name": "docs-4",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "-d",
+        "docs",
+        "8030"
+      ],
+      "port": 8030,
       "autoPort": false
     }
   ]

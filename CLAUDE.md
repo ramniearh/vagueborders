@@ -16,7 +16,8 @@ It's an informal hobby project, and the owner is using it to **learn to code wit
 - `.claude/launch.json` has a `docs` preview server (port 8000), plus `docs-alt` (8010) and `docs-3` (8020) for when those are taken by another chat.
 - **Phase 4 done:** `docs/time.js` preloads all 54 snapshots and projects each once (cached). It drives the slider (one step per snapshot, era bands, ticks), the year + era readout, ▶ play (1.6 s per step, 450 ms fades), ←/→ and space, and `?year=`. The cross-fade uses two stacked `<svg>` layers faded on the GPU (each carries its own `people-mask-a`/`-b` and labels). While playing, the next snapshot is pre-painted into the hidden back layer. Reduced motion → no autoplay, instant swaps. See PLAN.md's Phase 4 result.
 - **Phase 5 done:** `docs/panel.js`: click a polity → name, lineage, "under X", kind + source, border in words, a clickable per-snapshot strip, a Wikipedia summary (curated link, or exact-title "machine-matched", else none), and a prefilled "Wrong? Open an issue" link. The selection follows its id across snapshots. `identities.json` entries now also carry `years`. See PLAN.md's Phase 5 result.
-- **Next: Phase 6 (honesty panel & ship).** Update this section whenever a phase is finished.
+- **Phase 6 done:** `docs/about.js` (the "How vague is this?" `<dialog>`, text in index.html, plus live per-snapshot numbers) and `docs/find.js` (search over all names + lineage names via `<datalist>`, jumping to the nearest snapshot; a random-polity button). Credits footer, favicon, `docs/.nojekyll`. Precision switches from 1 to 3 at **1650**, not 1920 (PLAN.md corrected). Pages serves `main` `/docs`. `.claude/launch.json` also has `docs-4` (8030). See PLAN.md's Phase 6 result.
+- **Next:** all planned phases are done; see PLAN.md's "Later, maybe". Update this section whenever a phase is finished.
 
 ## Layout
 
