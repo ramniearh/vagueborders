@@ -15,6 +15,8 @@ const mapshaper = require('mapshaper');
 // The same d3 + topojson-client files the browser uses, so the checks match what gets drawn.
 const d3 = require('../docs/vendor/d3.v7.min.js');
 const topojson = require('../docs/vendor/topojson-client.v3.min.js');
+const { loadIdentities } = require('./identities.js');
+const ident = loadIdentities();
 
 const root = path.join(__dirname, '..');
 const rawDir = path.join(root, 'data/raw/geojson');
@@ -34,7 +36,8 @@ const clean = v => (typeof v === 'string' && v.trim() !== '' ? v.trim() : null);
 
 // Step 1: keep only the four properties the site needs.
 function normalise(p) {
-  const name = clean(p.NAME);
+  // A "name" with no letters or digits (the dataset has one "?") is not a name.
+  const name = /[\p{L}\p{N}]/u.test(clean(p.NAME) ?? '') ? clean(p.NAME) : null;
   let subject_to = clean(p.SUBJECTO);
   // SUBJECTO usually just repeats the feature's own name or abbreviation;
   // that is not "under X", so drop it. Unnamed features get no overlord either.
@@ -87,6 +90,18 @@ async function buildYear(year) {
 
   const fixed = fixWinding(topo);
 
+  // Phase 2b: identity (for colour) and kind (for fill look). Unnamed features get neither.
+  for (const g of layer.geometries) {
+    const p = g.properties;
+    if (!p.name) { Object.assign(p, { id: null, kind: null, kind_source: null }); continue; }
+    const { id, row } = ident.identify(p.name, year);
+    Object.assign(p, { id }, ident.kindOf(row, p.type_raw));
+  }
+  // Null properties are left out to save space: in the browser, a missing key means null.
+  for (const g of layer.geometries) {
+    for (const k in g.properties) if (g.properties[k] === null) delete g.properties[k];
+  }
+
   // Step 4: the flood check. Every feature must cover less than half the globe.
   const features = topojson.feature(topo, layer).features;
   const floods = features.filter(f => d3.geoArea(f) > 2 * Math.PI);
@@ -107,6 +122,7 @@ async function buildYear(year) {
 async function main() {
   const polities = {}; // name -> [years]
   let total = 0, totalGz = 0, totalFixed = 0, totalDropped = 0, badFiles = 0;
+  const kinds = {}; // "state from curated" -> count of named features
 
   for (const year of years) {
     const r = await buildYear(year);
@@ -114,6 +130,9 @@ async function main() {
     for (const f of r.features) {
       const name = f.properties.name;
       if (!name) continue;
+      const { kind, kind_source } = f.properties;
+      const k = kind ? `${kind} (${kind_source})` : 'not classified';
+      kinds[k] = (kinds[k] || 0) + 1;
       polities[name] ??= [];
       if (!polities[name].includes(year)) polities[name].push(year);
     }
@@ -132,10 +151,23 @@ async function main() {
   const sorted = Object.fromEntries(Object.keys(polities).sort().map(k => [k, polities[k]]));
   fs.writeFileSync(path.join(outDir, 'polities.json'), JSON.stringify(sorted) + '\n');
 
+  // The curated identities, for the info panel: lineage name and Wikipedia title.
+  const identities = Object.fromEntries(Object.values(ident.identities).map(r =>
+    [r.id, { name: r.display_name, wiki: r.wiki_title || null }]));
+  fs.writeFileSync(path.join(outDir, 'identities.json'), JSON.stringify(identities) + '\n');
+
   console.log(`\n${years.length} files, ${(total / 1e6).toFixed(2)} MB total, ` +
               `${(totalGz / 1e6).toFixed(2)} MB gzipped`);
   console.log(`${totalFixed} rings rewound, ${totalDropped} empty features dropped, ` +
               `${Object.keys(sorted).length} distinct names in polities.json`);
+  const named = Object.values(kinds).reduce((a, b) => a + b, 0);
+  console.log(`\nKind of the ${named} named features:`);
+  for (const [k, n] of Object.entries(kinds).sort((a, b) => b[1] - a[1])) {
+    console.log(`  ${k.padEnd(18)} ${String(n).padStart(5)}  (${(100 * n / named).toFixed(1)}%)`);
+  }
+  const unused = ident.unused();
+  if (unused.length) console.warn(`\nidentities.csv entries that matched nothing (typo?):\n  ${unused.join('\n  ')}`);
+
   if (badFiles) {
     console.error(`FAILED: ${badFiles} file(s) still have a feature flooding the globe`);
     process.exit(1);
