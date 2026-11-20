@@ -104,6 +104,13 @@ A small legend shows the three kinds and the two edge types.
 
 *Done when:* playing from the earliest snapshot to 2010 is smooth.
 
+*Result (Nov 2026):* `docs/time.js` (years, slider, play, keys) next to `docs/map.js` (projecting and painting). Details settled while building:
+- **Preload:** all 54 files are fetched at start (the shown one first). Each snapshot is projected once, in idle moments, next-to-be-shown first, and cached as path strings, label positions and filters. Paths are written with one decimal (`geoPath.digits(1)`): 19,000 parts, 2.4 MB of strings, ~43 MB heap in total. A step's JS is now ≤ 41 ms (1492) and 9 ms on average, down from ~230 ms.
+- **Cross-fade:** a per-id transition on ~2,000 blurred SVG shapes repaints everything on every frame, which is too slow. So there are two stacked `<svg>` layers, each holding a whole snapshot (fill, people-hatch mask, labels), and the new one fades in over the old on the GPU (`will-change: opacity` and the Web Animations API). Each layer's sphere is opaque, so the blend is per pixel: anything with the same id (so the same hue) and the same shape in both snapshots stays perfectly still, and only what changed fades. That is what "keyed by id" was meant to achieve. Geometry is never interpolated.
+- **Smoothness:** drawing a snapshot's blurred shapes still costs 50–600 ms of browser paint. While playing, the next snapshot is painted into the back layer as soon as a fade ends, hidden behind the front layer's sphere, so that cost lands in the quiet 1.15 s between fades. Measured in headless Chrome over a full play-through (−123000 → 2010, 87 s): frames during fades have a median of 16.7 ms and p95 of 17.1 ms, with a worst of 50 ms; the long frames all fall between fades.
+- **Slider:** a range input, one step per snapshot, with era bands behind it and a tick per snapshot (so the uneven sampling shows). A band too narrow for its name shows none. Eras (conventional world-history labels for orientation, not data, and Eurasia-centred; the About panel should say so): Prehistory (< 3000 BCE, the 5 sparse early snapshots), Ancient, Classical (from 500 BCE), Post-classical (500), Early modern (1500), Modern (1800), Contemporary (1945).
+- **Play:** with no `?year=` the page starts at the first snapshot and autoplays to 2010; with `?year=` (or reduced motion) it waits. ▶ at the end restarts. ←/→ step and pause; space toggles. With `prefers-reduced-motion`: no autoplay and instant swaps (play still works if pressed).
+
 **5 — Info panel.** Clicking a polity shows:
 - the name in this snapshot and the lineage name;
 - its kind and where that comes from ("curated", "from the dataset"), or "not classified";
