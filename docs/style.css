@@ -118,3 +118,61 @@ footer { text-align: center; font-style: italic; color: var(--muted); padding: 8
   paint-order: stroke; stroke: var(--map); stroke-width: 2.5px; stroke-opacity: .8;
 }
 .labels text.kind-state { font-variant: small-caps; letter-spacing: .04em; font-size: 11px; }
+
+/* The selected polity: a stronger outline. It sits under the shape's own blur
+   filter, so a soft (approximate) edge stays soft when selected. */
+.polity.selected { stroke: var(--ink); stroke-opacity: 1; stroke-width: 2; }
+
+/* ---- Info panel: top-right over the map; below the map on a phone ---- */
+.info {
+  position: absolute; top: 4px; right: 16px; z-index: 4; width: 260px;
+  max-height: calc(100% - 8px); overflow-y: auto; box-sizing: border-box;
+  background: rgba(255, 253, 248, .95); border: 1px solid var(--grat-faint); border-radius: 4px;
+  padding: 10px 14px 12px; font-size: 13.5px; line-height: 1.45;
+}
+.info .close {
+  float: right; margin: -4px -6px 0 4px; border: 0; background: none; cursor: pointer;
+  font-size: 20px; line-height: 1; color: var(--muted);
+}
+.info .head { display: flex; align-items: baseline; gap: 7px; }
+.info .chip { flex: none; width: 10px; height: 10px; border-radius: 2px; opacity: .8; }
+.info h2 { font-size: 1.15rem; font-weight: normal; margin: 0; line-height: 1.25; }
+.info .sub { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.info dl { margin: 8px 0 0; }
+.info dt {
+  font-family: var(--mono); font-size: 9.5px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .12em; margin-top: 9px;
+}
+.info dd { margin: 1px 0 0; }
+.info b { font-weight: normal; }
+.info .muted { color: var(--muted); }
+.info .small { font-size: 12px; }
+.info .tag { font-family: var(--mono); font-size: 10.5px; color: #8a5a00; }
+/* The summary is cut to a few lines; the link goes to the full article. */
+.info .extract {
+  margin: 2px 0 4px; display: -webkit-box; -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; line-clamp: 5; overflow: hidden;
+}
+.info a { color: var(--ink); }
+.info .issue { display: block; margin-top: 12px; font-size: 12px; color: var(--muted); }
+
+/* One cell per snapshot: dark = this name, light = another name in the lineage. */
+.strip { display: flex; gap: 1px; height: 14px; margin: 3px 0 4px; }
+.strip button {
+  flex: 1; min-width: 0; padding: 0; border: 0; cursor: pointer;
+  background: var(--grat-faint); opacity: .5;
+}
+.strip button.on { background: var(--c); opacity: 1; }
+.strip button.kin { background: var(--c); opacity: .35; }
+.strip button.now { outline: 1.5px solid var(--ink); outline-offset: 0; position: relative; }
+
+/* Wide screens: there's room beside the map, so the panel hides nothing. */
+@media (min-width: 1500px) {
+  .info { right: auto; left: calc(100% + 4px); }
+}
+/* Phones: the map takes the full width, so the panel and legend go below it. */
+@media (max-width: 700px) {
+  .stage { display: flex; flex-direction: column; }
+  .info { position: static; order: 1; width: auto; max-height: none; margin-top: 8px; }
+  .legend { position: static; order: 2; margin-top: 8px; justify-content: start; }
+}

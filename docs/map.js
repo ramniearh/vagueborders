@@ -122,13 +122,18 @@ function formatYear(y) {
 function project(topo) {
   const shapes = topojson.feature(topo, topo.objects.polities).features.map(f => {
     const p = f.properties;  // {name, precision, subject_to, id, kind, ...}; missing key = null
+    const parts = partsOf(f.geometry, p.precision);
     return {
       id: p.id || null,
       name: p.name || null,
       subjectTo: p.subject_to || null,
       // Unnamed areas get their own faint look; otherwise the kind, or "none" (not classified).
       kind: p.name ? (p.kind || 'none') : 'unnamed',
-      parts: partsOf(f.geometry, p.precision),
+      kindSource: p.kind_source || null,   // 'curated' / 'dataset' (for the info panel)
+      typeRaw: p.type_raw || null,         // the dataset's own TYPE, as written
+      precision: p.precision,
+      area: d3.sum(parts, q => q.area),
+      parts,
     };
   }).filter(s => s.parts.length);
   return { shapes, labels: placeLabels(shapes) };
@@ -170,8 +175,10 @@ function paint(layer, snap) {
       .attr('class', d => `polity kind-${d.kind}`)
       .attr('fill', d => d.id ? `hsl(${hue(d.id)}, 45%, 50%)` : null)
       .attr('stroke', d => d.id ? `hsl(${hue(d.id)}, 45%, 32%)` : null)
+      .classed('selected', isSelected)        // the polity open in the info panel
       .on('pointermove', showTooltip)
       .on('pointerleave', hideTooltip)
+      .on('click', (event, d) => { event.stopPropagation(); selectPolity(d); })
     .selectAll('path')
     .data(d => d.parts)
     .join('path')

@@ -77,6 +77,7 @@ async function show(i) {
   history.replaceState(null, '', `?year=${year}`);
 
   crossFade(snap);
+  updateInfo();   // the info panel follows its polity into the new snapshot
 }
 
 // Paint into the back layer, bring it to the front, and fade it in over the
@@ -151,6 +152,8 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     e.preventDefault();          // also stops the slider moving a second time on its own
     step(e.key === 'ArrowLeft' ? -1 : 1);
+  } else if (e.key === 'Escape') {
+    closeInfo();
   } else if (e.key === ' ') {
     e.preventDefault();          // no page scroll
     setPlaying(!playing);
