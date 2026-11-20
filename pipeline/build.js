@@ -121,6 +121,7 @@ async function buildYear(year) {
 
 async function main() {
   const polities = {}; // name -> [years]
+  const lineageYears = {}; // curated id -> [years], for the info panel
   let total = 0, totalGz = 0, totalFixed = 0, totalDropped = 0, badFiles = 0;
   const kinds = {}; // "state from curated" -> count of named features
 
@@ -135,6 +136,11 @@ async function main() {
       kinds[k] = (kinds[k] || 0) + 1;
       polities[name] ??= [];
       if (!polities[name].includes(year)) polities[name].push(year);
+      const id = f.properties.id;
+      if (ident.identities[id]) {
+        lineageYears[id] ??= [];
+        if (!lineageYears[id].includes(year)) lineageYears[id].push(year);
+      }
     }
     if (r.floods.length) badFiles++;
     console.log(
@@ -151,9 +157,10 @@ async function main() {
   const sorted = Object.fromEntries(Object.keys(polities).sort().map(k => [k, polities[k]]));
   fs.writeFileSync(path.join(outDir, 'polities.json'), JSON.stringify(sorted) + '\n');
 
-  // The curated identities, for the info panel: lineage name and Wikipedia title.
+  // The curated identities, for the info panel: lineage name, Wikipedia title,
+  // and the snapshots in which any of the lineage's names appears.
   const identities = Object.fromEntries(Object.values(ident.identities).map(r =>
-    [r.id, { name: r.display_name, wiki: r.wiki_title || null }]));
+    [r.id, { name: r.display_name, wiki: r.wiki_title || null, years: lineageYears[r.id] || [] }]));
   fs.writeFileSync(path.join(outDir, 'identities.json'), JSON.stringify(identities) + '\n');
 
   console.log(`\n${years.length} files, ${(total / 1e6).toFixed(2)} MB total, ` +
