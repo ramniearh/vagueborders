@@ -1,0 +1,14 @@
+{
+  "name": "vagueborders",
+  "private": true,
+  "description": "all borders approximate. some borders imaginary.",
+  "license": "GPL-3.0",
+  "type": "commonjs",
+  "scripts": {
+    "years": "node pipeline/years.js",
+    "build": "node pipeline/build.js"
+  },
+  "devDependencies": {
+    "mapshaper": "^0.8.5"
+  }
+}
