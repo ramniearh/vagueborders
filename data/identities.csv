@@ -1,0 +1,285 @@
+id,display_name,dataset_names,kind,wiki_title
+rome,Rome,Rome|Roman Republic|Roman Empire|Rome (Constantinus)|Rome (Diocletianus)|Rome (Galerius)|Rome (Maximian)|Western Roman Empire|Eastern Roman Empire|Byzantine Empire,state,Roman Empire
+trebizond,Empire of Trebizond,Trebizond,state,Empire of Trebizond
+carthage,Carthage,Carthage|Carthaginian Empire,state,Ancient Carthage
+greek-city-states,Greek city-states,Greek city-states|Greek colonies,state,Ancient Greece
+macedon,Macedon,Empire of Alexander|Macedon and Hellenic League,state,Macedonia (ancient kingdom)
+seleucid,Seleucid Empire,Seleucid Kingdom,state,Seleucid Empire
+ptolemaic,Ptolemaic Kingdom,Ptolemaic Kingdom,state,Ptolemaic Kingdom
+celts,Celts,Celts,people,Celts
+celtiberians,Celtiberians,Celtiberians,people,Celtiberians
+germanic-peoples,Germanic peoples,Germanic tribes,people,Germanic peoples
+visigoths,Visigoths,Visigoths|Visigothic Kingdom,state,Visigothic Kingdom
+ostrogoths,Ostrogoths,Ostrogoths,state,Ostrogothic Kingdom
+lombards,Lombards,Lombard principalities|Lombard duchies,state,Kingdom of the Lombards
+burgundians,Burgundians,Burgundians,people,Burgundians
+vandals,Vandals,Vandals,state,Vandal Kingdom
+franks,Franks,Franks|Frankish Kingdom|Neustria|Carolingian Empire,state,Francia
+france,France,West Francia|Kingdom of France|France,state,France
+holy-roman-empire,Holy Roman Empire,East Francia|Holy Roman Empire,state,Holy Roman Empire
+england,England,England|English territory|England and Ireland,state,Kingdom of England
+united-kingdom,United Kingdom,United Kingdom|United Kingdom of Great Britain and Ireland,state,United Kingdom
+scotland,Scotland,Scotland,state,Kingdom of Scotland
+anglo-saxons,Anglo-Saxons,Anglo-Saxons,people,Anglo-Saxons
+picts,Picts,Picts,people,Picts
+castile,Castile,Castilla|Castile|Castille,state,Crown of Castile
+leon,León,León,state,Kingdom of León
+aragon,Aragon,Aragón,state,Crown of Aragon
+navarre,Navarre,Navarre,state,Kingdom of Navarre
+spain,Spain,Spain,state,Spain
+portugal,Portugal,Portugal,state,Portugal
+cordoba,Caliphate of Córdoba,Caliphate of Córdoba,state,Umayyad state of Córdoba
+venice,Venice,Venice,state,Republic of Venice
+genoa,Genoa,Genoa,state,Republic of Genoa
+papal-states,Papal States,Papal States,state,Papal States
+naples,Naples,Naples,state,Kingdom of Naples
+sicily,Kingdom of Sicily,Sicily,state,Kingdom of Sicily
+emirate-of-sicily,Emirate of Sicily,Emirate of Sicily,state,Muslim Sicily
+savoy,Savoy / Sardinia,Savoy|Sardinia-Piedmont|Kingdom of Sardinia,state,Kingdom of Sardinia
+italy,Italy,Italy@1800..|Kingdom of Italy,state,Italy
+switzerland,Switzerland,Swiss Confederation|Switzerland,state,Switzerland
+netherlands,Netherlands,Dutch Republic|Netherlands,state,Netherlands
+dutch-east-indies,Dutch East Indies,Dutch East Indies|Netherlands Indies,state,Dutch East Indies
+prussia,Prussia,Brandenburg|Prussia,state,Prussia
+old-prussians,Old Prussians,Prussians,people,Old Prussians
+teutonic-order,Teutonic Order,Teutonic Knights,state,State of the Teutonic Order
+germany,Germany,German Empire|Germany,state,Germany
+austria,Austria,Austrian Empire|Austria Hungary|Austro-Hungarian Empire|Austria,state,Austria
+hungary,Hungary,Kingdom of Hungary|Hungary,state,Hungary
+magyars,Magyars,Magyars,people,Hungarians
+poland,Poland,Poland|Poland-Lithuania|Polish–Lithuanian Commonwealth,state,Poland
+lithuania,Lithuania,Lithuania,state,Lithuania
+denmark,Denmark,Denmark|Denmark-Norway,state,Denmark
+danes,Danes,Danes,people,Danes (tribe)
+kalmar-union,Kalmar Union,Kalmar Union,state,Kalmar Union
+sweden,Sweden,Sweden|Sweden–Norway,state,Sweden
+swedes,Swedes,Swedes|Swedes and Goths,people,Swedes (tribe)
+norway,Norway,Kingdom of Norway|Norway,state,Norway
+sami,Sámi,Saami|Sami|Samis|Sámi,people,Sámi people
+russia,Russia,Grand Duchy of Moscow|Tsardom of Muscovy|Russian Empire|Russia,state,Russia
+ussr,Soviet Union,USSR,state,Soviet Union
+kievan-rus,Kievan Rus',Kyivan Rus|Kievan Rus,state,Kievan Rus'
+novgorod,Novgorod,Principality of Novgorod|Novgorod,state,Novgorod Republic
+slavs,Slavs,Slavs|Proto-Slavs|Slavonic tribes|Slavic tribes,people,Slavs
+balts,Balts,Baltic tribes|Balts,people,Balts
+bulgars,Bulgars,Bulgars|Danube Bulgars,unknown,Bulgars
+volga-bulgaria,Volga Bulgaria,Volga Bulgars,state,Volga Bulgaria
+bulgaria,Bulgaria,Bulgaria,state,Bulgaria
+serbia,Serbia,Serbia,state,Serbia
+croatia,Croatia,Croatian kingdom|Croatia,state,Croatia
+bosnia,Bosnia,Bosnia|Bosnia-Herzegovina|Bosnia and Herzegovina,state,Bosnia and Herzegovina
+yugoslavia,Yugoslavia,Yugoslavia,state,Yugoslavia
+greece,Greece,Greece,state,Greece
+georgia,Georgia,Georgian Kingdom|Kingdom of Georgia|Georgia,state,Georgia (country)
+armenia,Armenia,Armenia,state,Armenia
+scythians,Scythians,Proto-Scythian culture|Scythians,people,Scythians
+sarmatians,Sarmatians,Sarmates,people,Sarmatians
+alans,Alans,Alans|Caucasian Alans,people,Alans
+dacia,Dacia,Dacians|Dacia,state,Dacia
+thracians,Thracians,Thrace,people,Thracians
+ur,Ur,Ur,state,Ur
+elam,Elam,Elam,state,Elam
+hurrians,Hurrians,Hurrian Kingdoms,state,Hurrians
+hittites,Hittites,Hittites,state,Hittites
+assyria,Assyria,Assyria,state,Assyria
+babylonia,Babylonia,Babylonia,state,Babylonia
+urartu,Urartu,Urartu,state,Urartu
+arameans,Arameans,Arameans,people,Arameans
+canaan,Canaan,Canaan,unknown,Canaan
+achaemenid,Achaemenid Empire,Achaemenid Empire,state,Achaemenid Empire
+parthia,Parthian Empire,Parthia|Parthian Empire,state,Parthian Empire
+sasanian,Sasanian Empire,Persia@..700|Sasanian Empire,state,Sasanian Empire
+safavid,Safavid Empire,Safavid Empire,state,Safavid Iran
+iran,Persia / Iran,Persia@1700..|Iran,state,Iran
+nabataea,Nabataean Kingdom,Nabatean Kingdom,state,Nabataean Kingdom
+saba,Saba,Saba,state,Sheba
+himyar,Himyarite Kingdom,Himyarite Kingdom,state,Himyar
+hadramaut,Hadramaut,Hadramaut,state,Hadhramaut
+umayyad,Umayyad Caliphate,Umayyad Caliphate,state,Umayyad Caliphate
+abbasid,Abbasid Caliphate,Abbasid Caliphate,state,Abbasid Caliphate
+fatimid,Fatimid Caliphate,Fatimid Caliphate,state,Fatimid Caliphate
+seljuk,Seljuk Empire,Seljuk Empire,state,Seljuk Empire
+mamluk,Mamluk Sultanate,Mamluke Sultanate,state,Mamluk Sultanate
+ottoman,Ottoman Empire,Ottoman Empire|Ottoman Sultanate,state,Ottoman Empire
+turkey,Turkey,Republic of Turkey|Turkey,state,Turkey
+saudi-arabia,Saudi Arabia,Nejd|Arabia (Nejd)|Saudi Arabia,state,Saudi Arabia
+hejaz,Kingdom of Hejaz,Hejaz@1900..,state,Kingdom of Hejaz
+oman,Oman,Oman|Muscat and Oman,state,Oman
+israel,Israel,Israel,state,Israel
+ancient-egypt,Ancient Egypt,Egypt@..0,state,Ancient Egypt
+egypt,Egypt,Egypt@1700..,state,Egypt
+kush,Kush,Kush|Meroe,state,Kingdom of Kush
+arabian-nomads,Arabian pastoral nomads,Arabian pastoral nomads,people,
+iranian-pastoralists,Iranian pastoralists,Iranian pastoralists,people,
+xiongnu,Xiongnu,Xiongnu|Southern Xiongnu,state,Xiongnu
+hunnic-empire,Hunnic Empire,Hunnic Empire,state,Huns
+khazars,Khazars,Khazars,state,Khazars
+western-turkic,Western Turkic Khaganate,Western Gokturk Khaganate,state,Western Turkic Khaganate
+mongols,Mongols,Mongols,people,Mongols
+mongol-empire,Mongol Empire,Mongol Empire,state,Mongol Empire
+golden-horde,Golden Horde,Khanate of the Golden Horde|Golden Horde,state,Golden Horde
+chagatai,Chagatai Khanate,Chagatai Khanate,state,Chagatai Khanate
+ilkhanate,Ilkhanate,Ilkhanate,state,Ilkhanate
+timurid,Timurid Empire,Timurid Empire|Timurid Emirates,state,Timurid Empire
+qara-khitai,Qara Khitai,Kara Khitai Khaganate,state,Qara Khitai
+mongolia,Mongolia,Mongolia,state,Mongolia
+tibetans,Tibetans,Tibetans|Proto-Tibetan cultures,people,Tibetans
+tibetan-empire,Tibetan Empire,Tibetan Empire,state,Tibetan Empire
+tibet,Tibet,Tibet,unknown,Tibet
+xia,Xia,Xia,unknown,Xia dynasty
+zhou,Zhou states,Zhou states,state,Zhou dynasty
+qin,Qin,Qin,state,Qin (state)
+han,Han dynasty,Han Empire|Han,state,Han dynasty
+han-zhao,Han-Zhao,Han Zhao,state,Han-Zhao
+jin,Jin dynasty,Jin,state,Jin dynasty (266–420)
+northern-wei,Northern Wei,Toba Wei,state,Northern Wei
+sui,Sui dynasty,Sui Empire,state,Sui dynasty
+tang,Tang dynasty,Tang Empire,state,Tang dynasty
+liao,Liao dynasty,Liao,state,Liao dynasty
+western-xia,Western Xia,Xixia,state,Western Xia
+song,Song dynasty,Song Empire,state,Song dynasty
+ming,Ming dynasty,Ming Empire|Ming Chinese Empire,state,Ming dynasty
+qing,Qing dynasty,Manchu Empire|Qing Empire,state,Qing dynasty
+chinese-warlords,Chinese warlords,Chinese Warlords|Chinese warlords,state,Warlord Era
+china,China,China,state,
+khitans,Khitans,Khitans,people,Khitan people
+tungusic,Tungusic peoples,Tungus|Tungusic Tribes,people,Tungusic peoples
+gojoseon,Gojoseon,Gojoseon,state,Old Chosŏn
+goguryeo,Goguryeo,Koguryo,state,Goguryeo
+baekje,Baekje,Paekche,state,Paekche
+silla,Silla,Silla,state,Silla
+korea,Korea,Goryeo|Korea,state,Korea
+jomon,Jōmon,Jōmon,people,Jōmon period
+yayoi,Yayoi,Yayoi,people,Yayoi period
+japan,Japan,Yamato|Japan|Imperial Japan (Fujiwara)|Shogun Japan (Kamakura)|Japan (Warring States)|Imperial Japan|Empire of Japan|Japan (USA),state,Japan
+ainu,Ainu,Ainu,people,Ainu people
+vietnam,Vietnam,Đại Việt|Annam|Vietnam,state,Vietnam
+champa,Champa,Champa|Champa City States,state,Champa
+khmer-empire,Khmer Empire,Khmer Empire,state,Khmer Empire
+cambodia,Cambodia,Cambodia,state,Cambodia
+pagan,Pagan Kingdom,Pagan|Kingdom of Pagan,state,Pagan Kingdom
+sukhothai,Sukhothai,Sukhothai,state,Sukhothai Kingdom
+ayutthaya,Ayutthaya,Ayutthaya,state,Ayutthaya Kingdom
+thailand,Siam / Thailand,Rattanakosin Kingdom|Siam|Thailand,state,Thailand
+srivijaya,Srivijaya,Srivijaya Empire,state,Srivijaya
+mataram,Mataram,Mataram,state,Mataram kingdom
+malacca,Malacca Sultanate,Malacca,state,Malacca Sultanate
+aceh,Aceh Sultanate,Aceh,state,Aceh Sultanate
+brunei,Brunei,Brunei,state,Brunei
+austronesians,Austronesians,Austronesians,people,Austronesian peoples
+polynesians,Polynesians,Polynesians,people,Polynesians
+tui-tonga,Tuʻi Tonga Empire,Tuʻi Tonga Empire,state,Tuʻi Tonga Empire
+hawaii,Kingdom of Hawaii,Kingdom of Hawaii,state,Hawaiian Kingdom
+maori,Māori,Maori|Maoris|Māori,people,Māori people
+papuans,Papuans,Papuans,people,
+dravidians,Dravidians,Dravidians,people,Dravidian peoples
+maurya,Maurya Empire,Mauryan Empire,state,Maurya Empire
+kushan,Kushan Empire,Kushan Empire|Kushan Principalities,state,Kushan Empire
+gupta,Gupta Empire,Gupta Empire,state,Gupta Empire
+chalukya,Chalukyas,Chalukyas|Chalukya Empire|Western Chalukyas,state,Chalukya dynasty
+chola,Chola,Chola|Cholas|Chola Empire,state,Chola dynasty
+rashtrakuta,Rashtrakuta,Rashtrakuta state|Rashtrakuta,state,Rashtrakuta Empire
+ghaznavid,Ghaznavids,Ghaznavid Emirate,state,Ghaznavid Empire
+delhi-sultanate,Delhi Sultanate,Sultanate of Delhi,state,Delhi Sultanate
+vijayanagara,Vijayanagara,Vijayanagara,state,Vijayanagara Empire
+bahmani,Bahmani Sultanate,Bahmani Kingdom,state,Bahmani Kingdom
+mughal,Mughal Empire,Mughal Empire,state,Mughal Empire
+maratha,Maratha Confederacy,Maratha|Maratha Confederacy,state,Maratha Empire
+british-raj,British Raj,British Raj,state,British Raj
+hindu-kingdoms,Hindu kingdoms,Hindu kingdoms,state,
+axum,Aksum,Axum,state,Kingdom of Aksum
+ethiopia,Ethiopia,Ethiopia|Abyssinia,state,Ethiopia
+ethiopian-highland-farmers,Ethiopian highland farmers,Ethiopian highland farmers|Ethiopian Highland Peoples,people,
+makuria,Makuria,Makkura,state,Makuria
+alodia,Alodia,Alwa,state,Alodia
+nobatia,Nobatia,Nobatia,state,Nobatia
+blemmyes,Blemmyes,Blemmyes,people,Blemmyes
+berbers,Berbers,Berbers|Berber Tribes,people,Berbers
+numidia,Numidia,Numidia,state,Numidia
+mauretania,Mauretania,Mauretania,state,Mauretania
+ghana-empire,Ghana Empire,Empire of Ghana|Ghana@..1300,state,Ghana Empire
+ghana,Ghana,Ghana@1900..,state,Ghana
+mali-empire,Mali Empire,Mali@..1800,state,Mali Empire
+mali,Mali,Mali@1900..,state,Mali
+songhai,Songhai Empire,Songhai,state,Songhai Empire
+kanem-bornu,Kanem–Bornu,Kanem|Kanem-Bornu,state,Kanem–Bornu Empire
+takrur,Takrur,Takrur|Tekrur,state,Takrur
+hausa,Hausa States,Hausa States,state,Hausa Kingdoms
+mossi,Mossi States,Mossi States,state,Mossi Kingdoms
+oyo,Oyo,Oyo,state,Oyo Empire
+kingdom-of-benin,Kingdom of Benin,Benin@..1900,state,Kingdom of Benin
+benin,Benin,Benin@1945..,state,Benin
+dahomey,Dahomey,Dahomey,state,Dahomey
+asante,Asante,Asante,state,Asante Empire
+sokoto,Sokoto Caliphate,Sokoto Caliphate,state,Sokoto Caliphate
+kongo,Kingdom of Kongo,Congo@..1900,state,Kingdom of Kongo
+luba,Luba,Luba,state,Luba Empire
+lunda,Lunda,Lunda,state,Lunda Empire
+great-zimbabwe,Great Zimbabwe,Great Zimbabwe,state,Kingdom of Great Zimbabwe
+mutapa,Mutapa,Mwenemutapa,state,Mutapa Empire
+zulu,Zulu Kingdom,Zulu|Zululand,state,Zulu Kingdom
+buganda,Buganda,Buganda,state,Buganda
+darfur,Darfur Sultanate,Darfur,state,Sultanate of Darfur
+wadai,Wadai,Wadai|Wadai Empire,state,Wadai Sultanate
+funj,Funj Sultanate,Funj,state,Funj Sultanate
+merina,Merina Kingdom,Merina Kingdom,state,Imerina
+khoisan,Khoisan,Khoisan,people,Khoisan
+bantu,Bantu peoples,Bantu|Bantu peoples,people,Bantu peoples
+guanches,Guanches,Guanches,people,Guanches
+west-african-cereal-farmers,West African cereal farmers,West African cereal farmers,people,
+saharan-pastoral-nomads,Saharan pastoral nomads,Saharan pastoral nomads,people,
+savanna-hunter-gatherers,Savanna hunter-gatherers,Savanna hunter-gatherers,people,
+olmec,Olmec,Olmec,unknown,Olmecs
+teotihuacan,Teotihuacan,Teotihuacan,state,Teotihuacan
+monte-alban,Monte Albán,Monte Albán,state,Monte Albán
+zapotec,Zapotec,Zapotec|Zapotec Empire,state,Zapotec civilization
+mixtec,Mixtec,Mixtecs|Mixtec Empire,state,Mixtec
+toltec,Toltec Empire,Toltec Empire,state,Toltec
+aztec,Aztec Empire,Aztec Empire,state,Aztec Empire
+maya,Maya,Maya chiefdoms and states|Maya states|Maya city-states|Maya|Mayas,unknown,Maya civilization
+chavin,Chavín,Chavin,unknown,Chavín culture
+moche,Moche,Moche,unknown,Moche culture
+nazca,Nazca,Nazca,unknown,Nazca culture
+wari,Wari,Huari Empire,state,Wari Empire
+tiwanaku,Tiwanaku,Tiahuanaco Empire,state,Tiwanaku polity
+chimu,Chimú,Chimú Empire|Chimú,state,Chimor
+inca,Inca Empire,Inca Empire,state,Inca Empire
+adena,Adena culture,Adena Culture,people,Adena culture
+hopewell,Hopewell,Hopewell Culture,people,Hopewell tradition
+ancestral-puebloans,Ancestral Puebloans,Anasazi,people,Ancestral Puebloans
+iroquois,Iroquois,Iroquois,unknown,Haudenosaunee
+taino,Taíno,Taino,people,Taíno
+arawaks,Arawaks,Arawaks,people,Arawak
+thule,Thule,Thule,people,Thule people
+dorset,Dorset,Dorset,people,Dorset culture
+paleo-inuit,Paleo-Inuit,Paleo-Inuit,people,Paleo-Eskimo
+beothuk,Beothuk,Beothuk,people,Beothuk
+new-spain,New Spain,Viceroyalty of New Spain,state,New Spain
+viceroyalty-of-peru,Viceroyalty of Peru,Viceroyalty of Peru,state,Viceroyalty of Peru
+colonial-brazil,Colonial Brazil,Portuguese Brazil|Viceroyalty of Brazil,state,Colonial Brazil
+new-france,New France,New France,state,New France
+brazil,Brazil,Kingdom of Brazil|Brazil,state,Brazil
+united-states,United States,United States of America|United States,state,United States
+canada,Canada,Canada,state,Canada
+mexico,Mexico,Mexico,state,Mexico
+amazon-hunter-gatherers,Amazon hunter-gatherers,Amazon hunter-gatherers,people,
+andean-hunter-gatherers,Andean hunter-gatherers,Andean hunter-gatherers,people,
+pampas-cultures,Pampas cultures,Pampas cultures,people,
+patagonian-hunters,Patagonian shellfish and marine mammal hunters,Patagonian shellfish and marine mammal hunters,people,
+caribbean-hunter-gatherers,Caribbean hunter-gatherers,Caribbean hunter-gatherers,people,
+plateau-hunter-gatherers,Plateau fishers and hunter-gatherers,Plateau fichers and hunter gatherers,people,
+desert-hunter-gatherers,Desert hunter-gatherers,Desert hunter-gatherers,people,
+pacific-foragers,"North American Pacific foraging, hunting and fishing peoples","North American Pacific foraging, hunting and fishing peoples",people,
+plain-bison-hunters,Plain bison hunters,Plain bison hunters,people,
+eastern-na-hunter-gatherers,Eastern North American hunter-gatherers,Eastern North American hunter-gatherers,people,
+subarctic-hunter-gatherers,Subarctic forest hunter-gatherers,Subarctic forest hunter-gatherers,people,
+arctic-marine-hunters,Arctic marine mammal hunters,Arctic marine mammal hunters,people,
+manioc-farmers,Manioc farmers,Manioc farmers,people,
+maize-farmers,Maize farmers,Maize farmers,people,
+shellfish-gatherers,Shellfish gatherers,Shellfish gatherers,people,
+finno-ugric-hunter-gatherers,Finno-Ugric taiga hunter-gatherers,Finno-Ugric taiga hunter-gatherers,people,
+paleo-siberian-hunter-gatherers,Paleo-Siberian hunter-gatherers,Paleo-Siberian hunter-gatherers,people,
+hunter-gatherers,Hunter-gatherers,Hunters-gatherers,people,
+aboriginal-australians,Aboriginal Australians,Aboriginal tribes|Australian aboriginal hunter-gatherers,people,Aboriginal Australians
+aboriginal-tasmanians,Aboriginal Tasmanians,Tasmanian hunter-gatherers|Aboriginal Tasmanians,people,Aboriginal Tasmanians
+antarctica,Antarctica,Antarctica,other,Antarctica
