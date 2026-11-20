@@ -16,10 +16,20 @@ python3 -m http.server -d docs 8000
 
 Then open http://localhost:8000.
 
+## Rebuild the data
+
+The dataset is cloned (git-ignored) into `data/raw/` at the pinned commit:
+
+```
+git clone --filter=blob:none --no-checkout https://github.com/aourednik/historical-basemaps.git data/raw
+git -C data/raw checkout 4b5039e
+node pipeline/years.js
+```
+
 ## Credits & licence
 
 - Historical borders: [aourednik/historical-basemaps](https://github.com/aourednik/historical-basemaps) @ `4b5039e`, GPL-3.0
 - Summaries and links: Wikipedia
-- Rendering: [D3](https://d3js.org)
+- Rendering: [D3](https://d3js.org) v7.9.0 and [topojson-client](https://github.com/topojson/topojson-client) v3.1.0 (ISC licence), copied into `docs/vendor/`
 
 This repo is GPL-3.0, matching the dataset.

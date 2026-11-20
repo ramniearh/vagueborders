@@ -7,10 +7,11 @@ It's an informal hobby project, and the owner is using it to **learn to code wit
 
 ## Where things stand (Nov 2026)
 
-- Planning and a data audit are done. No app code exists yet.
-- `docs/index.html` is a placeholder so the GitHub Pages URL works straight away.
+- Planning and a data audit are done.
+- **Phase 1 done:** dataset cloned to `data/raw/` @ `4b5039e`; `pipeline/years.js` writes `docs/data/years.json` (54 years, −123000…2010; `world_bc1` → −1, i.e. 1 BCE, no year 0); LICENSE (GPL-3.0); d3 v7.9.0 + topojson-client v3.1.0 in `docs/vendor/`.
+- `docs/index.html` is still a placeholder so the GitHub Pages URL works straight away.
 - `sketch/vagueborders-sketch.html` (if the owner has added it) is the reference for layout, palette and type only. Its blur effect is superseded; see PLAN.md.
-- **Next: Phase 1.** Update this section whenever a phase is finished.
+- **Next: Phase 2.** Update this section whenever a phase is finished.
 
 ## Layout
 
