@@ -16,10 +16,28 @@ body {
   font: 16px/1.5 Georgia, "Times New Roman", serif;
 }
 
-header { text-align: center; padding: 16px 16px 0; }
+header { text-align: center; padding: 16px 16px 4px; }
 .wordmark {
   font-weight: normal; font-variant: small-caps; letter-spacing: .18em;
   font-size: 1.6rem; margin: 0;
+}
+
+/* Search box and the About link, under the wordmark. */
+.tools {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 6px 16px; margin-top: 6px;
+}
+#search {
+  width: 18em; max-width: 100%; box-sizing: border-box; padding: 4px 8px;
+  font: 12px var(--mono); color: var(--ink);
+  background: var(--map); border: 1px solid var(--grat-faint); border-radius: 3px;
+}
+#search:focus-visible { outline: 2px solid var(--grat); outline-offset: 1px; }
+/* A button that looks like a link (it opens a dialog, so it's a button). */
+button.link {
+  border: 0; padding: 0; background: none; cursor: pointer;
+  font: italic 14px Georgia, serif; color: var(--ink); text-decoration: underline;
+  text-decoration-color: var(--grat); text-underline-offset: 3px;
 }
 
 /* The map is a square; the year box and legend sit in its empty corners. */
@@ -58,7 +76,13 @@ header { text-align: center; padding: 16px 16px 0; }
   flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%;
   background: var(--ink); color: var(--map); font-size: 14px; cursor: pointer;
 }
-.play:focus-visible { outline: 2px solid var(--grat); outline-offset: 2px; }
+.play:focus-visible, .random:focus-visible { outline: 2px solid var(--grat); outline-offset: 2px; }
+/* Random: the outline twin of play. */
+.random {
+  flex: none; height: 40px; padding: 0 12px; border: 1.5px solid var(--ink); border-radius: 20px;
+  background: none; color: var(--ink); cursor: pointer;
+  font: 10px var(--mono); text-transform: uppercase; letter-spacing: .14em;
+}
 
 /* The bands and ticks are inset by half the thumb's width, so snapshot i
    sits right under the thumb when the slider is at i. */
@@ -88,7 +112,36 @@ header { text-align: center; padding: 16px 16px 0; }
 #slider::-moz-range-thumb { width: 6px; height: 34px; border: 0; border-radius: 2px; background: var(--ink); }
 #slider:focus-visible { outline: 2px solid var(--grat); outline-offset: 2px; }
 
-footer { text-align: center; font-style: italic; color: var(--muted); padding: 8px 16px 24px; }
+footer { text-align: center; color: var(--muted); padding: 8px 16px 24px; }
+footer p { margin: 0 auto; max-width: 640px; }
+footer .tagline { font-style: italic; }
+footer .credits { font-size: 12px; margin-top: 8px; }
+footer a { color: var(--muted); }
+footer button.link { font-size: 12px; color: var(--muted); }
+
+/* ---- The "How vague is this?" dialog ---- */
+.about {
+  width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 48px); box-sizing: border-box;
+  padding: 18px 24px 20px; color: var(--ink); background: var(--map);
+  border: 1px solid var(--grat-faint); border-radius: 4px; font-size: 15px; line-height: 1.55;
+}
+.about::backdrop { background: rgba(43, 46, 51, .35); }
+.about h2 { font-weight: normal; font-variant: small-caps; letter-spacing: .08em; margin: 0 0 6px; }
+.about h3 {
+  font: 10.5px var(--mono); color: var(--muted); text-transform: uppercase;
+  letter-spacing: .14em; margin: 18px 0 2px;
+}
+.about p, .about ul { margin: 4px 0; }
+.about ul { padding-left: 20px; }
+.about .lede { font-style: italic; }
+.about .now { font-family: var(--mono); font-size: 12.5px; }
+.about .muted { color: var(--muted); font-size: 13px; margin-top: 14px; }
+.about a { color: var(--ink); }
+.about b { font-weight: bold; }
+.about .close {
+  float: right; margin: -8px -12px 0 8px; border: 0; background: none; cursor: pointer;
+  font-size: 24px; line-height: 1; color: var(--muted);
+}
 
 .yearbox, .legend, .tooltip { z-index: 3; }
 .tooltip {
@@ -175,4 +228,7 @@ footer { text-align: center; font-style: italic; color: var(--muted); padding: 8
   .stage { display: flex; flex-direction: column; }
   .info { position: static; order: 1; width: auto; max-height: none; margin-top: 8px; }
   .legend { position: static; order: 2; margin-top: 8px; justify-content: start; }
+  .about { padding: 14px 16px 16px; font-size: 14.5px; }
+  .controls { gap: 10px; }
+  .random { padding: 0 9px; }
 }

@@ -4,11 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>vagueborders</title>
+<meta name="description" content="An animated atlas of human polities and peoples, 123,000 BCE to 2010, kept honest about uncertainty: as vague as the data, no more, no less.">
+<meta property="og:title" content="vagueborders">
+<meta property="og:description" content="All borders approximate. Some borders imaginary. An animated atlas of polities and peoples, as vague as the data.">
+<!-- A tiny inline icon (a soft-edged circle), so there's no favicon request to 404. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6.5' fill='%2393a6b2' fill-opacity='.5' stroke='%232b2e33'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1 class="wordmark"><b>vague</b>borders</h1>
+    <div class="tools">
+      <input type="search" id="search" list="names" placeholder="find a polity or people…"
+             aria-label="Find a polity or people" autocomplete="off" spellcheck="false">
+      <datalist id="names"></datalist>
+      <button class="link" id="about-open">how vague is this?</button>
+    </div>
   </header>
 
   <main class="stage">
@@ -29,6 +40,7 @@
 
   <div class="controls">
     <button class="play" id="play" aria-label="Play">&#x25B6;&#xFE0E;</button>
+    <button class="random" id="random" title="A random named polity or people, in one of its snapshots">random</button>
     <div class="timeline">
       <div class="bands" id="bands"></div>
       <div class="ticks" id="ticks"></div>
@@ -36,7 +48,93 @@
     </div>
   </div>
 
-  <footer>all borders approximate. some borders imaginary.</footer>
+  <footer>
+    <p class="tagline">all borders approximate. some borders imaginary.</p>
+    <p class="credits">
+      Borders: <a href="https://github.com/aourednik/historical-basemaps/tree/4b5039e">historical-basemaps</a>
+      by André Ourednik and contributors (GPL-3.0), simplified.
+      Summaries: <a href="https://en.wikipedia.org">Wikipedia</a> (CC BY-SA).
+      Code: <a href="https://github.com/ramniearh/vagueborders">vagueborders</a> (GPL-3.0).
+      <button class="link" id="about-open-2">How vague is this?</button>
+    </p>
+  </footer>
+
+  <!-- The honesty panel. Static text; the "this snapshot" numbers are filled in by about.js. -->
+  <dialog class="about" id="about" aria-labelledby="about-title">
+    <button class="close" id="about-close" aria-label="Close">×</button>
+    <h2 id="about-title">How vague is this?</h2>
+    <p class="lede">The aim is to be <i>as vague as the data, no more, no less</i>. Here is what that
+      means, and what the map can't tell you.</p>
+
+    <h3>This snapshot</h3>
+    <p id="about-now" class="now">…</p>
+
+    <h3>Where the borders come from</h3>
+    <p>Every shape comes from <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a>,
+      a GPL-3.0 dataset curated by André Ourednik with outside contributions, compiled from many older
+      maps of mixed quality. It calls itself work in progress. It does <b>not</b> record which source each
+      border was drawn from, or by whom. The map uses one fixed version (commit <code>4b5039e</code>),
+      simplified for the web to about 4% of its points, which loses fine detail along edges and coasts.
+      325 slivers of 0.2 km² or less vanished in that step; two names disappear entirely with them.</p>
+
+    <h3>What a snapshot is</h3>
+    <p>There are 54 snapshots, from 123,000 BCE to 2010 CE, spaced very unevenly: 113,000 years
+      between the first two, two years between 1878 and 1880. Each is a point sample, not an average and
+      not a record of everything that happened between it and the next. The dataset doesn't say how exact
+      a snapshot's date is. Nothing is drawn in between: when a border jumps, the jump is the honest picture.
+      The era names on the timeline are conventional, Eurasia-centred labels for orientation, not data.</p>
+
+    <h3>Soft and crisp edges</h3>
+    <p>The dataset flags each border as 1 (approximate), 2 (moderately precise) or 3 (determined by
+      international law). Only four borders use 2, so it's effectively a yes/no flag; 2 is drawn as
+      approximate, rounding toward uncertainty. Approximate borders are blurred in proportion to their size;
+      the others are drawn crisp. Nothing is blurred for decoration.</p>
+    <p>In practice the flag tracks the date more than the border: every snapshot up to 1600 is approximate
+      (bar three shapes), and from 1650 on nearly everything is crisp, right after the 1648 Peace of
+      Westphalia, which the dataset's own notes name as when national borders start to mean something in
+      Europe. That cut-off is applied to the whole world. A crisp edge in 1700 means "the dataset treats this as
+      a legal border", not "this line was well known on the ground".</p>
+
+    <h3>Mostly peoples, not just states</h3>
+    <p>This is closer to an atlas of who lived roughly where than a chart of empires. The longest-lived
+      entries are hunter-gatherer, farming and pastoral peoples. 41% of all shapes have no name at all
+      (islands, unclaimed land); they stay faint grey and unlabelled.</p>
+    <p>Kind is shown only where something says so. Of the 10,399 named shapes, 73% are <b>not classified</b>:
+      nothing in the data says whether they were a state or a people, and the map doesn't guess. About 26% get
+      their kind from a hand-made identity table (284 rows, drafted with an AI assistant and being
+      reviewed), and under 1% from the dataset's own rare "type" field. There is no "empire" category,
+      because nothing in the data separates an empire from any other state. Where the dataset's shapes
+      overlap, they're drawn overlapping.</p>
+    <p>Colour follows identity. The identity table groups some names into one lineage (Roman Republic →
+      Roman Empire → Byzantium keep one colour); every other name gets its own colour, so a change of name
+      means a change of colour, which is not a claim that anything else changed. Labels always show the
+      dataset's own name for that snapshot.</p>
+
+    <h3>The projection</h3>
+    <p>The map is an azimuthal equidistant projection centred on the North Pole and cut off at 60°S.
+      Distances and directions from the pole are true; everything else stretches the further south it is,
+      so South America, southern Africa and Australia look wider than they are, and Europe sits in the
+      middle by choice, not importance. Antarctica isn't shown.</p>
+
+    <h3>Links</h3>
+    <p>A "curated link" was chosen by hand and points to the article for the whole lineage (Byzantium links
+      to "Roman Empire"). A "machine-matched" link is an article whose title is exactly the name, which can
+      still be about something else of that name. Otherwise there's no link rather than a guess. Opening a
+      panel fetches the summary from en.wikipedia.org.</p>
+
+    <h3>What is not shown</h3>
+    <ul>
+      <li>anything between snapshots, or how borders moved;</li>
+      <li>anything south of 60°S;</li>
+      <li>who drew each border, and from what source;</li>
+      <li>populations, languages, religions, trade or movement;</li>
+      <li>disputed claims, except where the dataset draws them as overlapping shapes;</li>
+      <li>past coastlines, rivers and lakes (the shapes mostly follow today's coasts, even in the Ice Age);</li>
+      <li>labels that don't fit their shape (hover or click it instead).</li>
+    </ul>
+    <p class="muted">Something wrong? Each info panel has an "Open an issue" link. Border problems may
+      belong upstream, at <a href="https://github.com/aourednik/historical-basemaps/issues">historical-basemaps</a>.</p>
+  </dialog>
 
   <!-- Shared hatch pattern and blur filters, used by both map layers. -->
   <svg id="defs" width="0" height="0" aria-hidden="true"></svg>
@@ -46,5 +144,7 @@
   <script src="map.js"></script>
   <script src="panel.js"></script>
   <script src="time.js"></script>
+  <script src="find.js"></script>
+  <script src="about.js"></script>
 </body>
 </html>

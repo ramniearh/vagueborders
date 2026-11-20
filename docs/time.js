@@ -149,6 +149,8 @@ function step(delta) {
 
 document.addEventListener('keydown', e => {
   if (e.altKey || e.ctrlKey || e.metaKey) return;
+  // Typing in the search box, or reading the About dialog: keys are theirs, not ours.
+  if (e.target.closest('input[type=search], dialog')) return;
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     e.preventDefault();          // also stops the slider moving a second time on its own
     step(e.key === 'ArrowLeft' ? -1 : 1);
@@ -160,7 +162,9 @@ document.addEventListener('keydown', e => {
   }
 });
 // A focused button "clicks" on space key-up; we already handled space above.
-document.addEventListener('keyup', e => { if (e.key === ' ') e.preventDefault(); });
+document.addEventListener('keyup', e => {
+  if (e.key === ' ' && !e.target.closest('input[type=search], dialog')) e.preventDefault();
+});
 
 // ---- The slider: one step per snapshot, with era bands and a tick per snapshot ----
 

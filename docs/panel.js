@@ -6,8 +6,9 @@ const ISSUES = 'https://github.com/ramniearh/vagueborders/issues/new';
 const info = d3.select('#info');
 
 // Lineage names, Wikipedia titles and years (curated ids), and name → years.
+// (find.js waits on `lookups` too, for its search list.)
 let identities = {}, polities = {};
-Promise.all([d3.json('data/identities.json'), d3.json('data/polities.json')])
+const lookups = Promise.all([d3.json('data/identities.json'), d3.json('data/polities.json')])
   .then(([i, p]) => { identities = i; polities = p; updateInfo(); });
 
 let selected = null;   // { id, name } of the polity open in the panel
