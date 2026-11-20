@@ -62,12 +62,16 @@ Also write `polities.json` (each name → the snapshots it appears in).
 
 **2b — Identities.** Create `data/identities.csv` with the columns `id, display_name, dataset_names (|-separated), kind (state / people / other / unknown), wiki_title`. Fill in about 200 rows covering the most persistent or prominent entities; Claude drafts them and I review. The pipeline attaches the identity id, and unmatched names keep their slug.
 
+A name in `dataset_names` may carry a year range (inclusive, BCE negative) when the same name means different polities in different eras: `Ghana@..1300` is the Ghana Empire, `Ghana@1900..` the modern country. Check where the feature sits before splitting (the dataset does use modern names for colonial territories, e.g. "Ghana" in 1920). If an unmatched name's slug clashes with a curated id, it gets `-uncurated` appended so the two don't share a colour.
+
 The pipeline also attaches `kind` (`state` / `people` / `null`) and `kind_source` (`curated` / `dataset` / `null`):
-1. the curated `kind`, if the name is in the table (`other` and `unknown` → `null`);
-2. otherwise `type_raw`, mapped: "kingdom", "kingdoms", "state society" → `state`; hunter-gatherer, forager, farming, pastoral, nomad, culture and chiefdom values → `people`; anything else (e.g. "civilization") → `null`;
+1. the curated `kind`, if the name is in the table and the kind is `state` or `people`; `other` → `null` (a firm "not classified");
+2. otherwise (not in the table, or curated `unknown`, meaning the curator has no opinion) `type_raw`, mapped: "kingdom", "kingdoms", "state society" → `state`; hunter-gatherer, forager, farming, pastoral, nomad, culture and chiefdom values → `people`; anything else (e.g. "civilization") → `null`;
 3. otherwise `null`, meaning "not classified".
 
 *Done when:* Rome keeps one colour from Republic to Byzantium, Ming is a single entity, the label still shows each snapshot's own name, and the pipeline prints how many named features got each kind and from which source.
+
+*Result (Nov 2026):* 284 rows (~200 polities and lineages, plus the persistent "people" categories such as "Amazon hunter-gatherers"). All 258 Wikipedia titles were checked against the Wikipedia API: redirects replaced by their targets, one disambiguation page ("Papuans") dropped. Of 10,399 named features: 72.9% not classified, 17.0% state (curated), 9.4% people (curated), 0.7% people (dataset), 0.1% state (dataset). The curated table never contradicts a dataset TYPE. The pipeline also writes `docs/data/identities.json` (id → lineage name + Wikipedia title) for the info panel. A name with no letters or digits (the dataset has one "?") counts as unnamed. Null properties are left out of the TopoJSON (missing key = null); total 4.54 MB, 1.24 MB gzipped.
 
 **3 — The map.** Draw a sphere and a faint graticule. Each polity gets a flat fill at about 42% opacity plus an edge stroke:
 - precision 3 → a thin, crisp edge;
