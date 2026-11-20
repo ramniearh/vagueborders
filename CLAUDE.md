@@ -13,9 +13,10 @@ It's an informal hobby project, and the owner is using it to **learn to code wit
 - **Phase 2b done:** `data/identities.csv` (284 rows; `Name@from..to` year ranges allowed in dataset_names) is read by `pipeline/identities.js`. Features now also carry `id`, `kind` (state/people), `kind_source` (curated/dataset); null properties are omitted (missing = null). `docs/data/identities.json` maps id → `{name, wiki}`. Wiki titles verified against the Wikipedia API. Rows are Claude's draft: the owner is reviewing them.
 - **Phase 3 done:** `docs/index.html` + `style.css` + `map.js` draw one snapshot (pick it with the temporary `<select>` or `?year=1279`). Real polygons; precision 1 → per-part Gaussian blur (σ = 9% of the smaller dimension, floor 0.8, cap 2.5), precision 3 → crisp. Kind looks, labels, tooltip and legend are in. See PLAN.md's Phase 3 result.
 - `sketch/vagueborders-sketch.html` (if the owner has added it) is the reference for layout, palette and type only. Its blur effect is superseded; see PLAN.md.
-- `.claude/launch.json` has a `docs` preview server (port 8000) and `docs-alt` (port 8010) for when 8000 is taken.
+- `.claude/launch.json` has a `docs` preview server (port 8000), plus `docs-alt` (8010) and `docs-3` (8020) for when those are taken by another chat.
 - **Phase 4 done:** `docs/time.js` preloads all 54 snapshots and projects each once (cached). It drives the slider (one step per snapshot, era bands, ticks), the year + era readout, ▶ play (1.6 s per step, 450 ms fades), ←/→ and space, and `?year=`. The cross-fade uses two stacked `<svg>` layers faded on the GPU (each carries its own `people-mask-a`/`-b` and labels). While playing, the next snapshot is pre-painted into the hidden back layer. Reduced motion → no autoplay, instant swaps. See PLAN.md's Phase 4 result.
-- **Next: Phase 5 (info panel).** Update this section whenever a phase is finished.
+- **Phase 5 done:** `docs/panel.js`: click a polity → name, lineage, "under X", kind + source, border in words, a clickable per-snapshot strip, a Wikipedia summary (curated link, or exact-title "machine-matched", else none), and a prefilled "Wrong? Open an issue" link. The selection follows its id across snapshots. `identities.json` entries now also carry `years`. See PLAN.md's Phase 5 result.
+- **Next: Phase 6 (honesty panel & ship).** Update this section whenever a phase is finished.
 
 ## Layout
 

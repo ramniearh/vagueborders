@@ -119,6 +119,14 @@ A small legend shows the three kinds and the two edge types.
 - a Wikipedia summary, following the link rule above;
 - a "Wrong? Open an issue" link.
 
+*Result (Nov 2026):* `docs/panel.js`. Details settled while building:
+- **Selection follows the identity.** The panel stays open while stepping or playing and shows the same id in each new snapshot (the same name if it's there, else that id's largest feature), or "not in the 1914 CE snapshot". The selected polity gets an ink outline; it sits under the shape's own blur, so an approximate edge stays soft when selected. Esc, ×, or a click on empty map closes it.
+- **Snapshots** are a strip with one cell per snapshot (dark = this name, light = another name in the same curated lineage, outlined = now), clickable to jump, plus the same in words ("1279 CE – 1400 CE (3 of 54 snapshots)") and the line "Snapshots are samples, not continuous history." The pipeline now writes each curated lineage's years into `identities.json`; for a name, `polities.json` already had them. (This covers part of the "lifespan strip" idea below.)
+- **Kind** says where it comes from: "from the curated identity table", "from the dataset (type “…”)", or "not classified", with the dataset's own word when it has one that maps to no kind ("civilization").
+- **Wikipedia** uses the REST summary API (`/api/rest_v1/page/summary/{title}`), fetched in the browser and cached per title. The curated title is shown as "curated link"; note it is the *lineage's* article (Byzantium in 1279 shows "Roman Empire", Đại Việt shows "Vietnam"). Otherwise a **machine match** is accepted only if the article (after redirects) is an ordinary article whose title equals the name, ignoring case, accents and punctuation: "Great Khanate" → "Yuan dynasty" and "Touareg" → "Tuareg people" are rejected; "Taino" = "Taíno" passes. It's tagged "machine-matched" with "Same title, but it may be about something else of that name", because exact titles still miss: in 1279, "Granada" matches the modern city and "Cyprus" the modern country. A curated row fixes such cases. The summary is cut to five lines; the link goes to the full article.
+- **Issue link** opens a GitHub issue prefilled with the snapshot, name, id and kind shown, and a note that a border problem may belong upstream.
+- **Layout:** top-right over the map (260px); on screens ≥ 1500px it sits beside the map so it hides nothing; on phones (≤ 700px) it goes below the map with the legend, and scrolls into view when opened.
+
 **6 — Honesty panel & ship.** A "How vague is this?" About panel covering:
 - the source (crowd-drawn, GPL, pinned commit);
 - what a snapshot is;

@@ -13,6 +13,13 @@
       "runtimeArgs": ["-m", "http.server", "-d", "docs", "8010"],
       "port": 8010,
       "autoPort": false
+    },
+    {
+      "name": "docs-3",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "-d", "docs", "8020"],
+      "port": 8020,
+      "autoPort": false
     }
   ]
 }
